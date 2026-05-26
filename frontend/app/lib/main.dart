@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'screens/game/map_game_screen.dart';
+import 'core/theme/app_theme.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RPG Interativo Campus I',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1D4ED8)),
-        useMaterial3: true,
-      ),
-      home: const MapGameScreen(),
+      theme: AppTheme.light,
+      home: const SplashScreen(),
     );
   }
 }

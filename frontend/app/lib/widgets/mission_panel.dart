@@ -1,103 +1,100 @@
 import 'package:flutter/material.dart';
 
+import 'mission_card.dart';
+import 'status_badge.dart';
+
 class MissionPanel extends StatelessWidget {
   const MissionPanel({
     super.key,
     required this.missaoAtual,
-    required this.statusConexao,
+    required this.dicaNarrativa,
+    required this.distanciaTexto,
+    required this.statusGps,
     required this.latitude,
     required this.longitude,
-    required this.resultadoApi,
+    required this.ambienteAtual,
+    required this.destinoLatitude,
+    required this.destinoLongitude,
+    required this.distanciaMetros,
+    required this.raioMetros,
+    required this.statusRaio,
+    required this.statusVerificacao,
+    required this.detalheVerificacao,
+    required this.podeEntrarNaMissao,
+    this.onTracarRota,
+    this.onEntrarMissao,
+    this.onSimularChegada,
   });
 
   final String missaoAtual;
-  final String statusConexao;
+  final String dicaNarrativa;
+  final String distanciaTexto;
+  final String statusGps;
   final double? latitude;
   final double? longitude;
-  final String resultadoApi;
+  final String ambienteAtual;
+  final double? destinoLatitude;
+  final double? destinoLongitude;
+  final double? distanciaMetros;
+  final double raioMetros;
+  final String statusRaio;
+  final String statusVerificacao;
+  final String detalheVerificacao;
+  final bool podeEntrarNaMissao;
+  final VoidCallback? onTracarRota;
+  final VoidCallback? onEntrarMissao;
+  final VoidCallback? onSimularChegada;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return SafeArea(
-      top: false,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
-        decoration: const BoxDecoration(
-          color: Color(0xF2FFFFFF),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x33000000),
-              blurRadius: 16,
-              offset: Offset(0, -4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              missaoAtual,
-              style: textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 10),
-            _InfoRow(label: 'Conexao', value: statusConexao),
-            _InfoRow(label: 'Latitude', value: _formatCoordinate(latitude)),
-            _InfoRow(label: 'Longitude', value: _formatCoordinate(longitude)),
-            _InfoRow(label: 'API', value: resultadoApi),
-          ],
-        ),
-      ),
+    return MissionCard(
+      title: missaoAtual.replaceFirst('Missao atual: ', ''),
+      hint: dicaNarrativa,
+      distanceText: distanciaTexto,
+      apiStatusText: _gpsStatusText,
+      apiDetailText: detalheVerificacao,
+      apiTone: _gpsTone,
+      gpsStatusText: statusGps,
+      latitude: latitude,
+      longitude: longitude,
+      environmentName: ambienteAtual,
+      destinationLatitude: destinoLatitude,
+      destinationLongitude: destinoLongitude,
+      distanceMeters: distanciaMetros,
+      radiusMeters: raioMetros,
+      radiusStatusText: statusRaio,
+      verificationStatusText: statusVerificacao,
+      canEnter: podeEntrarNaMissao,
+      onTraceRoute: onTracarRota,
+      onEnter: onEntrarMissao,
+      onSimulateArrival: onSimularChegada,
     );
   }
 
-  String _formatCoordinate(double? value) {
-    if (value == null) {
-      return '--';
+  String get _gpsStatusText {
+    final normalized = statusGps.toLowerCase();
+    if (normalized.contains('ativo')) {
+      return 'GPS ok';
     }
-    return value.toStringAsFixed(6);
+    if (normalized.contains('simulada')) {
+      return 'Debug';
+    }
+    if (normalized.contains('iniciando') || normalized.contains('aguardando')) {
+      return 'GPS';
+    }
+    return 'GPS off';
   }
-}
 
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 82,
-            child: Text(
-              label,
-              style: const TextStyle(
-                color: Color(0xFF475569),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Color(0xFF0F172A)),
-            ),
-          ),
-        ],
-      ),
-    );
+  StatusBadgeTone get _gpsTone {
+    final normalized = statusGps.toLowerCase();
+    if (normalized.contains('ativo')) {
+      return StatusBadgeTone.success;
+    }
+    if (normalized.contains('simulada') ||
+        normalized.contains('iniciando') ||
+        normalized.contains('aguardando')) {
+      return StatusBadgeTone.warning;
+    }
+    return StatusBadgeTone.error;
   }
 }
