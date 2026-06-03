@@ -60,7 +60,7 @@ class _StageCompleteScreenState extends State<StageCompleteScreen> {
                       SizedBox(height: compact ? 12 : 16),
                       GameSectionTitle(
                         eyebrow: 'RECOMPENSA',
-                        title: 'Missao concluida',
+                        title: 'Missão concluída',
                         subtitle: widget.environment.completionText,
                         icon: Icons.emoji_events_outlined,
                         compact: compact,
@@ -93,8 +93,8 @@ class _StageCompleteScreenState extends State<StageCompleteScreen> {
                         icon: isLast ? Icons.emoji_events : Icons.lock_open,
                         label: isLast
                             ? 'Jornada completa'
-                            : 'Proximo ambiente desbloqueado',
-                        value: isLast ? 'Todas as fases concluidas' : next.nome,
+                            : 'Próximo ambiente desbloqueado',
+                        value: isLast ? 'Todas as fases concluídas' : next.nome,
                       ),
                       SizedBox(height: compact ? 16 : 20),
                       GameButton(

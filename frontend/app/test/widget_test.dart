@@ -7,7 +7,7 @@ void main() {
     await tester.pumpWidget(const MyApp());
 
     expect(
-      find.text('Sua jornada academica em forma de fase.'),
+      find.text('Uma forma prática de conhecer o campus.'),
       findsOneWidget,
     );
 
@@ -15,6 +15,6 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     expect(find.text('Entrar na Jornada'), findsOneWidget);
-    expect(find.text('Criar novo personagem'), findsOneWidget);
+    expect(find.text('Criar novo perfil'), findsOneWidget);
   });
 }

@@ -1,11 +1,11 @@
 {
-    "name": "projeto_integrador_jogo",
-    "short_name": "projeto_integrador_jogo",
+    "name": "Campus I em Jogo",
+    "short_name": "Campus I",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Aplicativo gamificado para orientar calouros pelo Campus I da PUC-Campinas.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

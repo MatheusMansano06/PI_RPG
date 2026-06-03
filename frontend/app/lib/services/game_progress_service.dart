@@ -2,11 +2,7 @@ import '../data/story_mock.dart';
 import '../models/game_environment_model.dart';
 import '../models/game_progress_model.dart';
 
-enum AmbienteStatus {
-  concluido,
-  atual,
-  bloqueado,
-}
+enum AmbienteStatus { concluido, atual, bloqueado }
 
 class GameProgressService {
   GameProgressService._();

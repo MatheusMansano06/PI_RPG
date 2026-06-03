@@ -1,0 +1,7 @@
+backend/apiRpg/node_modules/
+frontend/app/build/
+frontend/app/.dart_tool/
+frontend/app/.flutter-plugins
+frontend/app/.flutter-plugins-dependencies
+frontend/app/android/local.properties
+.DS_Store

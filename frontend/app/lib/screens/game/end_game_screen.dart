@@ -30,9 +30,9 @@ class EndGameScreen extends StatelessWidget {
                     children: [
                       GameSectionTitle(
                         eyebrow: 'CAMPANHA FINALIZADA',
-                        title: 'Jornada concluida',
+                        title: 'Jornada concluída',
                         subtitle:
-                            'Voce conectou mapa, narrativa, personagens e escolhas em uma aventura pelo Campus I.',
+                            'Você conectou mapa, narrativa, personagens e escolhas em uma experiência pelo Campus I.',
                         icon: Icons.emoji_events,
                         compact: compact,
                       ),

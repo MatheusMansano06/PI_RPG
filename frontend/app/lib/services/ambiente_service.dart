@@ -2,7 +2,8 @@ import '../core/network/api_client.dart';
 import '../models/ambiente_model.dart';
 
 class AmbienteService {
-  AmbienteService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
+  AmbienteService({ApiClient? apiClient})
+    : _apiClient = apiClient ?? ApiClient();
 
   final ApiClient _apiClient;
 

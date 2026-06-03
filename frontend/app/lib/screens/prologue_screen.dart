@@ -40,38 +40,38 @@ class PrologueScreen extends StatelessWidget {
                           ),
                           GameHudBadge(
                             icon: Icons.notification_important_outlined,
-                            label: 'Alerta de matricula',
+                            label: 'Alerta de matrícula',
                           ),
                         ],
                       ),
                       SizedBox(height: compact ? 16 : 22),
                       GameSectionTitle(
-                        eyebrow: 'ABERTURA NARRATIVA',
+                        eyebrow: 'ABERTURA',
                         title: 'Primeiro dia na PUC-Campinas',
                         subtitle:
-                            'Uma notificacao urgente transforma a chegada ao campus na sua primeira grande missao.',
+                            'Uma notificação urgente transforma a chegada ao campus em uma missão de orientação.',
                         icon: Icons.auto_stories,
                         compact: compact,
                       ),
                       SizedBox(height: compact ? 16 : 22),
                       const _NarrativeParagraph(
                         text:
-                            'Voce e um calouro chegando ao Campus I. Antes da primeira aula, uma notificacao aparece no celular: existe uma pendencia na sua matricula.',
+                            'Você é um calouro chegando ao Campus I. Antes da primeira aula, uma notificação aparece no celular: existe uma pendência na sua matrícula.',
                       ),
                       const SizedBox(height: 12),
                       const _MissionCallout(
                         text:
-                            'Missao principal: explorar o campus, conversar com personagens e resolver o bloqueio antes que o primeiro dia saia do controle.',
+                            'Missão principal: explorar o campus, conversar com personagens e resolver o bloqueio antes que o primeiro dia fique confuso.',
                       ),
                       const SizedBox(height: 12),
                       const _NarrativeParagraph(
                         text:
-                            'Cada ambiente revela uma pista. Cada escolha aproxima voce da solucao ou cria uma nova side quest universitaria.',
+                            'Cada ambiente revela uma pista. Cada escolha aproxima você da solução ou mostra uma consequência comum da vida universitária.',
                         muted: true,
                       ),
                       SizedBox(height: compact ? 18 : 24),
                       GameButton(
-                        label: 'Comecar Missao',
+                        label: 'Começar missão',
                         icon: Icons.travel_explore,
                         compact: compact,
                         onPressed: () {

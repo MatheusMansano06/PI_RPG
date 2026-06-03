@@ -133,7 +133,9 @@ class _MissionCardState extends State<MissionCard> {
                       ),
                       IconButton(
                         icon: Icon(
-                          _isMinimized ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                          _isMinimized
+                              ? Icons.keyboard_arrow_down
+                              : Icons.keyboard_arrow_up,
                           color: const Color(0xFFBAE6FD),
                         ),
                         onPressed: () {
@@ -152,7 +154,9 @@ class _MissionCardState extends State<MissionCard> {
                         color: const Color(0xFF020617).withValues(alpha: 0.48),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: const Color(0xFF38BDF8).withValues(alpha: 0.18),
+                          color: const Color(
+                            0xFF38BDF8,
+                          ).withValues(alpha: 0.18),
                         ),
                       ),
                       child: compact
@@ -196,7 +200,8 @@ class _MissionCardState extends State<MissionCard> {
                                 const SizedBox(height: 10),
                                 _Metric(
                                   label: 'Raio necessario',
-                                  value: '${widget.radiusMeters.toStringAsFixed(0)} m',
+                                  value:
+                                      '${widget.radiusMeters.toStringAsFixed(0)} m',
                                   icon: Icons.radio_button_checked,
                                 ),
                                 const SizedBox(height: 10),
@@ -355,16 +360,20 @@ class _MissionCardState extends State<MissionCard> {
                                     variant: GameButtonVariant.secondary,
                                     onPressed: widget.onTraceRoute,
                                   ),
-                                if (widget.onTraceRoute != null && widget.onEnter != null)
+                                if (widget.onTraceRoute != null &&
+                                    widget.onEnter != null)
                                   const SizedBox(height: 10),
                                 if (widget.onEnter != null)
                                   GameButton(
                                     label: 'Iniciar fase',
                                     icon: Icons.sports_esports,
                                     compact: true,
-                                    onPressed: widget.canEnter ? widget.onEnter : null,
+                                    onPressed: widget.canEnter
+                                        ? widget.onEnter
+                                        : null,
                                   ),
-                                if (widget.onEnter != null && widget.onSimulateArrival != null)
+                                if (widget.onEnter != null &&
+                                    widget.onSimulateArrival != null)
                                   const SizedBox(height: 10),
                                 if (widget.onSimulateArrival != null)
                                   GameButton(
@@ -374,7 +383,7 @@ class _MissionCardState extends State<MissionCard> {
                                     variant: GameButtonVariant.subtle,
                                     onPressed: widget.onSimulateArrival,
                                   ),
-                                ],
+                              ],
                             )
                           : Row(
                               children: [
@@ -388,7 +397,8 @@ class _MissionCardState extends State<MissionCard> {
                                       onPressed: widget.onTraceRoute,
                                     ),
                                   ),
-                                if (widget.onTraceRoute != null && widget.onEnter != null)
+                                if (widget.onTraceRoute != null &&
+                                    widget.onEnter != null)
                                   const SizedBox(width: 10),
                                 if (widget.onEnter != null)
                                   Expanded(
@@ -396,10 +406,13 @@ class _MissionCardState extends State<MissionCard> {
                                     child: GameButton(
                                       label: 'Iniciar fase',
                                       icon: Icons.sports_esports,
-                                      onPressed: widget.canEnter ? widget.onEnter : null,
+                                      onPressed: widget.canEnter
+                                          ? widget.onEnter
+                                          : null,
                                     ),
                                   ),
-                                if (widget.onEnter != null && widget.onSimulateArrival != null)
+                                if (widget.onEnter != null &&
+                                    widget.onSimulateArrival != null)
                                   const SizedBox(width: 10),
                                 if (widget.onSimulateArrival != null)
                                   Expanded(
@@ -411,8 +424,8 @@ class _MissionCardState extends State<MissionCard> {
                                       variant: GameButtonVariant.subtle,
                                     ),
                                   ),
-                                ],
-                              ),
+                              ],
+                            ),
                     ],
                   ],
                 ],
@@ -448,7 +461,8 @@ class _MissionCardState extends State<MissionCard> {
   }
 
   String get _destinationCoordinateText {
-    if (widget.destinationLatitude == null || widget.destinationLongitude == null) {
+    if (widget.destinationLatitude == null ||
+        widget.destinationLongitude == null) {
       return '--';
     }
     return '${widget.destinationLatitude!.toStringAsFixed(6)}, ${widget.destinationLongitude!.toStringAsFixed(6)}';

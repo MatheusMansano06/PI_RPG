@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   Icon(Icons.explore, color: AppTheme.accent, size: 82),
                   const SizedBox(height: 18),
                   const Text(
-                    'RPG Interativo Campus I',
+                    'Campus I em Jogo',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Sua jornada academica em forma de fase.',
+                    'Uma forma prática de conhecer o campus.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFFE0F2FE),
@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     onPressed: _goToLogin,
                     icon: const Icon(Icons.play_arrow, color: AppTheme.accent),
                     label: const Text(
-                      'Entrar pela nuvem',
+                      'Entrar no campus',
                       style: TextStyle(
                         color: Color(0xFFE0F2FE),
                         fontWeight: FontWeight.w800,

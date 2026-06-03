@@ -21,9 +21,9 @@ class LocalizacaoPermissaoResultado {
       LocalizacaoPermissaoStatus.servicoDesligado =>
         'GPS desligado. Ative a localizacao do celular para jogar em campo.',
       LocalizacaoPermissaoStatus.negado =>
-        'Permissao de localizacao negada. O mapa continua aberto, mas a missao fica bloqueada.',
+        'Permissão de localização negada. O mapa continua aberto, mas a missão fica bloqueada.',
       LocalizacaoPermissaoStatus.negadoParaSempre =>
-        'Permissao de localizacao bloqueada. Libere a permissao nas configuracoes do Android.',
+        'Permissão de localização bloqueada. Libere a permissão nas configurações do Android.',
     };
   }
 }

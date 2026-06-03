@@ -31,10 +31,10 @@ class ProgressScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       GameSectionTitle(
-                        eyebrow: 'DIARIO DE BORDO',
-                        title: 'Progresso da Jornada',
+                        eyebrow: 'DIÁRIO DE BORDO',
+                        title: 'Progresso da jornada',
                         subtitle:
-                            'Acompanhe ambientes desbloqueados, concluidos e a proxima missao do Campus I.',
+                            'Acompanhe ambientes desbloqueados, concluídos e a próxima missão do Campus I.',
                         icon: Icons.timeline,
                         compact: compact,
                       ),
@@ -63,7 +63,7 @@ class ProgressScreen extends StatelessWidget {
                       }),
                       const SizedBox(height: 14),
                       GameButton(
-                        label: 'Voltar ao Menu',
+                        label: 'Voltar ao menu',
                         icon: Icons.arrow_back,
                         variant: GameButtonVariant.secondary,
                         onPressed: () => Navigator.of(context).pop(),

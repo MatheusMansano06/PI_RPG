@@ -54,7 +54,7 @@ class _GameMapScreenState extends State<GameMapScreen> {
   GameEnvironmentModel? _routeEnvironment;
   bool? _mapsApiKeyConfigured;
   bool _hasLocationPermission = false;
-  String _mapsConfigMessage = 'Validando configuracao do Google Maps...';
+  String _mapsConfigMessage = 'Validando configuração do Google Maps...';
   String _statusGps = 'Iniciando GPS...';
   String _statusVerificacao = 'Verificacao local ativa';
   String _detalheVerificacao =
@@ -99,12 +99,12 @@ class _GameMapScreenState extends State<GameMapScreen> {
         return;
       }
       final keyMessage = defaultTargetPlatform == TargetPlatform.iOS
-          ? 'Chave iOS ausente/invalidada. Configure GOOGLE_MAPS_API_KEY em ios/Flutter/GoogleMapsKeys.xcconfig e habilite Maps SDK for iOS no Google Cloud.'
+          ? 'Chave iOS ausente ou inválida. Configure GOOGLE_MAPS_API_KEY em ios/Flutter/GoogleMapsKeys.xcconfig e habilite Maps SDK for iOS no Google Cloud.'
           : 'Chave do Google Maps ausente. Configure MAPS_API_KEY em android/local.properties.';
       setState(() {
         _mapsApiKeyConfigured = configured ?? false;
         _mapsConfigMessage = _mapsApiKeyConfigured == true
-            ? 'Google Maps configurado'
+            ? 'Google Maps configurado.'
             : keyMessage;
       });
     } catch (_) {
@@ -112,8 +112,8 @@ class _GameMapScreenState extends State<GameMapScreen> {
         return;
       }
       final platformMessage = defaultTargetPlatform == TargetPlatform.iOS
-          ? 'Nao foi possivel validar a chave do Google Maps no iOS.'
-          : 'Nao foi possivel validar a chave do Google Maps no Android.';
+          ? 'Não foi possível validar a chave do Google Maps no iOS.'
+          : 'Não foi possível validar a chave do Google Maps no Android.';
       setState(() {
         _mapsApiKeyConfigured = false;
         _mapsConfigMessage = platformMessage;
@@ -207,7 +207,7 @@ class _GameMapScreenState extends State<GameMapScreen> {
         setState(() {
           _statusVerificacao = 'Verificacao local ativa';
           _detalheVerificacao =
-              'Distancia calculada no celular com Geolocator.distanceBetween.';
+              'Distância calculada no celular com Geolocator.distanceBetween.';
         });
       }
       return;
@@ -227,18 +227,18 @@ class _GameMapScreenState extends State<GameMapScreen> {
         return;
       }
       setState(() {
-        _statusVerificacao = 'Backend online; verificacao local ativa';
+        _statusVerificacao = 'Backend online; verificação local ativa';
         _detalheVerificacao =
-            'API respondeu, mas a liberacao usa o raio local do Flutter.';
+            'API respondeu, mas a liberação usa o raio local do Flutter.';
       });
     } catch (_) {
       if (!mounted) {
         return;
       }
       setState(() {
-        _statusVerificacao = 'Verificacao local ativa';
+        _statusVerificacao = 'Verificação local ativa';
         _detalheVerificacao =
-            'Backend offline ou inacessivel. O jogo continua usando GPS local.';
+            'Backend offline ou inacessível. O jogo continua usando GPS local.';
       });
     } finally {
       _checkingLocation = false;
@@ -348,7 +348,7 @@ class _GameMapScreenState extends State<GameMapScreen> {
               missaoAtual: _missionText(currentEnvironment),
               dicaNarrativa:
                   currentEnvironment?.dicaParaProximoLocal ??
-                  'Todas as missoes foram concluidas.',
+                  'Todas as missões foram concluídas.',
               distanciaTexto: _distanceText(distance, currentEnvironment),
               statusGps: _statusGps,
               latitude: playerLatLng?.latitude,
@@ -407,9 +407,9 @@ class _GameMapScreenState extends State<GameMapScreen> {
 
   String _missionText(GameEnvironmentModel? environment) {
     if (environment == null) {
-      return 'Missao finalizada: Campus I explorado';
+      return 'Missão finalizada: Campus I explorado';
     }
-    return 'Missao atual: ${environment.nome}';
+    return 'Missão atual: ${environment.nome}';
   }
 
   String _distanceText(double? distance, GameEnvironmentModel? environment) {
@@ -445,20 +445,20 @@ class _GameMapScreenState extends State<GameMapScreen> {
   String _mensagemAmigavelErroGps(Object error) {
     final text = error.toString().toLowerCase();
     if (text.contains('permission')) {
-      return 'Permissao de localizacao indisponivel.';
+      return 'Permissão de localização indisponível.';
     }
     if (text.contains('disabled') || text.contains('service')) {
-      return 'GPS desligado. Ative a localizacao do celular.';
+      return 'GPS desligado. Ative a localização do celular.';
     }
-    return 'GPS indisponivel no momento. Aguardando nova leitura.';
+    return 'GPS indisponível no momento. Aguardando nova leitura.';
   }
 
   String _gpsStatusText(Position position) {
     final accuracy = position.accuracy;
     if (accuracy <= 10) {
-      return 'GPS ativo - precisao ${accuracy.toStringAsFixed(0)} m';
+      return 'GPS ativo - precisão ${accuracy.toStringAsFixed(0)} m';
     }
-    return 'GPS ativo - baixa precisao ${accuracy.toStringAsFixed(0)} m';
+    return 'GPS ativo - baixa precisão ${accuracy.toStringAsFixed(0)} m';
   }
 
   Position? _filteredPosition(Position position) {
@@ -564,7 +564,7 @@ class _GameMapScreenState extends State<GameMapScreen> {
             title: 'Seu boneco',
             snippet: _currentPosition == null
                 ? null
-                : 'Precisao ${_currentPosition!.accuracy.toStringAsFixed(0)} m',
+                : 'Precisão ${_currentPosition!.accuracy.toStringAsFixed(0)} m',
           ),
         ),
     };
@@ -633,8 +633,8 @@ class _GameMapScreenState extends State<GameMapScreen> {
 
   String _markerSnippet(AmbienteStatus status) {
     return switch (status) {
-      AmbienteStatus.concluido => 'Concluido',
-      AmbienteStatus.atual => 'Missao atual',
+      AmbienteStatus.concluido => 'Concluído',
+      AmbienteStatus.atual => 'Missão atual',
       AmbienteStatus.bloqueado => 'Bloqueado',
     };
   }

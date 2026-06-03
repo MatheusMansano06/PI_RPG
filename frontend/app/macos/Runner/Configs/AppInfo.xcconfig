@@ -1,8 +1,6 @@
-// Application-level settings for the Runner target.
+// Configurações gerais do app macOS.
 //
-// This may be replaced with something auto-generated from metadata (e.g., pubspec.yaml) in the
-// future. If not, the values below would default to using the project name when this becomes a
-// 'flutter create' template.
+// Estes valores identificam o app quando ele roda como aplicação desktop.
 
 // The application's name. By default this is also the title of the Flutter window.
 PRODUCT_NAME = projeto_integrador_jogo

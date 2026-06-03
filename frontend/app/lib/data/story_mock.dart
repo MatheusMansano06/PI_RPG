@@ -7,234 +7,239 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
   GameEnvironmentModel(
     id: 'estacionamento_entrada',
     nome: 'Entrada/Estacionamento da PUC',
-    descricao: 'O ponto inicial da jornada pelo Campus I.',
+    descricao: 'O primeiro contato do aluno com o Campus I.',
     latitude: -22.83455,
     longitude: -47.05278,
     raioMetros: 60,
     stageNumber: 1,
     missionTitle: 'Resolver o primeiro bloqueio',
     missionDescription:
-        'Descubra onde regularizar a notificacao urgente sobre sua matricula.',
+        'Descubra onde regularizar a notificação urgente sobre sua matrícula.',
     introText:
-        'Seu celular vibra antes mesmo da primeira aula: ha uma pendencia na matricula. A entrada do campus vira sua primeira quest.',
+        'Seu celular vibra antes mesmo da primeira aula: existe uma pendência na matrícula. A entrada do campus vira o ponto de partida.',
     npc: NpcModel(
-      nome: 'Seu Ze',
+      nome: 'Seu Zé',
       descricao: 'Orientador da entrada, conhece cada atalho do campus.',
       falaInicial:
-          'Calouro, respira. Se sua matricula deu problema, voce precisa chegar ao lugar certo sem se perder.',
+          'Calouro, respira. Se sua matrícula deu problema, você precisa chegar ao lugar certo sem se perder.',
     ),
     dialogue: [
       DialogueOptionModel(
-        texto: 'Pedir orientacao com calma e explicar a notificacao.',
+        texto: 'Pedir orientação com calma e explicar a notificação.',
         correta: true,
         reacao:
-            'Boa abordagem. Seu Ze marca o caminho da Secretaria no seu mapa.',
+            'Boa abordagem. Seu Zé marca o caminho da Secretaria no seu mapa.',
       ),
       DialogueOptionModel(
-        texto: 'Entrar correndo sem falar com ninguem.',
+        texto: 'Entrar correndo sem falar com ninguém.',
         correta: false,
-        reacao: 'Isso so aumenta a confusao. Primeiro colete informacao.',
+        reacao: 'Isso só aumenta a confusão. Primeiro colete informação.',
       ),
       DialogueOptionModel(
         texto: 'Desistir e voltar para casa.',
         correta: false,
-        reacao: 'A jornada mal comecou. Calouro persistente ganha XP.',
+        reacao: 'A jornada mal começou. Persistência também conta ponto.',
       ),
     ],
     challenge: StageChallengeModel(
-      title: 'Como pedir orientacao?',
+      title: 'Como pedir orientação?',
       description:
-          'Seu Ze pergunta o que aconteceu. Escolha a postura que ajuda a liberar a proxima pista.',
+          'Seu Zé pergunta o que aconteceu. Escolha a postura que ajuda a liberar a próxima pista.',
       rewardXp: 80,
       rewardText: 'Mapa inicial atualizado.',
       options: [
         DialogueOptionModel(
-          texto: 'Mostrar a notificacao e pedir o caminho da Secretaria.',
+          texto: 'Mostrar a notificação e pedir o caminho da Secretaria.',
           correta: true,
-          reacao: 'Perfeito. Informacao clara gera ajuda rapida.',
+          reacao: 'Perfeito. Informação clara gera ajuda rápida.',
         ),
         DialogueOptionModel(
-          texto: 'Perguntar onde fica o refeitorio.',
+          texto: 'Perguntar onde fica o refeitório.',
           correta: false,
-          reacao: 'Importante, mas ainda nao resolve a matricula.',
+          reacao: 'Importante, mas ainda não resolve a matrícula.',
         ),
         DialogueOptionModel(
-          texto: 'Falar que nao precisa de ajuda.',
+          texto: 'Falar que não precisa de ajuda.',
           correta: false,
-          reacao: 'Heroi solo tambem precisa de NPC tutorial.',
+          reacao:
+              'Mesmo quem quer se virar sozinho precisa de uma boa orientação.',
         ),
       ],
     ),
     completionText: 'Entrada liberada. A Secretaria foi marcada como destino.',
-    nextHint: 'Siga para a Secretaria Academica e procure orientacao oficial.',
+    nextHint: 'Siga para a Secretaria Acadêmica e procure orientação oficial.',
   ),
   GameEnvironmentModel(
     id: 'secretaria',
-    nome: 'Secretaria Academica',
-    descricao: 'Centro de informacoes academicas e registros.',
+    nome: 'Secretaria Acadêmica',
+    descricao: 'Centro de informações acadêmicas e registros.',
     latitude: -22.83362,
     longitude: -47.05155,
     raioMetros: 60,
     stageNumber: 2,
-    missionTitle: 'Negociar sua regularizacao',
+    missionTitle: 'Resolver sua regularização',
     missionDescription:
-        'Converse com a Secretaria e descubra a origem da pendencia.',
+        'Converse com a Secretaria e descubra a origem da pendência.',
     introText:
-        'A fila anda devagar, mas cada resposta importa. Voce precisa ser claro, educado e persistente.',
+        'A fila anda devagar, mas cada resposta importa. Você precisa ser claro, educado e persistente.',
     npc: NpcModel(
       nome: 'Helena',
       descricao: 'Atendente precisa, rapida e cheia de pistas institucionais.',
       falaInicial:
-          'Achei sua pendencia. Para resolver, preciso confirmar seus dados e encaminhar voce ao setor correto.',
+          'Achei sua pendência. Para resolver, preciso confirmar seus dados e encaminhar você ao setor correto.',
     ),
     dialogue: [
       DialogueOptionModel(
         texto: 'Responder com respeito e apresentar os documentos.',
         correta: true,
-        reacao: 'Helena confere tudo e reduz o misterio a uma pista concreta.',
+        reacao:
+            'Helena confere tudo e transforma o problema em uma pista concreta.',
       ),
       DialogueOptionModel(
         texto: 'Culpar o sistema e interromper a atendente.',
         correta: false,
-        reacao: 'Diplomacia baixa. A quest pede paciencia.',
+        reacao: 'A conversa trava. O melhor caminho aqui é manter a calma.',
       ),
       DialogueOptionModel(
         texto: 'Pedir para resolver depois.',
         correta: false,
-        reacao: 'Depois pode virar boss fight. Melhor agir agora.',
+        reacao:
+            'Deixar para depois pode complicar o primeiro dia. Melhor agir agora.',
       ),
     ],
     challenge: StageChallengeModel(
       title: 'Atendimento em 3 rodadas',
       description:
-          'A melhor resposta combina educacao, clareza e pedido objetivo.',
+          'A melhor resposta combina educação, clareza e pedido objetivo.',
       rewardXp: 100,
-      rewardText: 'Encaminhamento academico recebido.',
+      rewardText: 'Encaminhamento acadêmico recebido.',
       options: [
         DialogueOptionModel(
-          texto: 'Confirmar dados, agradecer e perguntar o proximo setor.',
+          texto: 'Confirmar dados, agradecer e perguntar o próximo setor.',
           correta: true,
-          reacao: 'Resposta diplomatica. Helena desbloqueia o Predio CT.',
+          reacao:
+              'Resposta respeitosa. Helena libera o caminho para o Prédio CT.',
         ),
         DialogueOptionModel(
-          texto: 'Exigir prioridade porque e seu primeiro dia.',
+          texto: 'Exigir prioridade porque é seu primeiro dia.',
           correta: false,
-          reacao: 'A pressao nao ajuda. Tente colaborar.',
+          reacao: 'A pressão não ajuda. Tente colaborar.',
         ),
         DialogueOptionModel(
           texto: 'Sair sem anotar o encaminhamento.',
           correta: false,
-          reacao: 'Sem pista nao ha progresso.',
+          reacao: 'Sem pista não há progresso.',
         ),
       ],
     ),
-    completionText: 'Documentos conferidos. O Predio CT foi desbloqueado.',
-    nextHint: 'Va ao Predio CT para encontrar a proxima pista.',
+    completionText: 'Documentos conferidos. O Prédio CT foi desbloqueado.',
+    nextHint: 'Vá ao Prédio CT para encontrar a próxima pista.',
   ),
   GameEnvironmentModel(
     id: 'predio_ct',
-    nome: 'Predio CT',
-    descricao: 'Espaco ligado aos cursos e desafios de tecnologia.',
+    nome: 'Prédio CT',
+    descricao: 'Espaço ligado aos cursos e desafios de tecnologia.',
     latitude: -22.83318,
     longitude: -47.05262,
     raioMetros: 60,
     stageNumber: 3,
     missionTitle: 'Decifrar a grade curricular',
     missionDescription:
-        'Entenda qual disciplina causou conflito na sua matricula.',
+        'Entenda qual disciplina causou conflito na sua matrícula.',
     introText:
-        'No CT, avisos, turmas e horarios parecem um labirinto. Um professor reconhece o padrao do erro.',
+        'No CT, avisos, turmas e horários parecem um labirinto. Um professor reconhece o padrão do erro.',
     npc: NpcModel(
       nome: 'Professor Marcos',
       descricao:
-          'Professor que transforma qualquer corredor em sala de estrategia.',
+          'Professor que transforma qualquer corredor em sala de estratégia.',
       falaInicial:
-          'Seu problema parece choque de grade. Vamos testar se voce entende a logica dos horarios.',
+          'Seu problema parece choque de grade. Vamos testar se você entende a lógica dos horários.',
     ),
     dialogue: [
       DialogueOptionModel(
-        texto: 'Comparar turma, horario e pre-requisito.',
+        texto: 'Comparar turma, horário e pré-requisito.',
         correta: true,
-        reacao: 'Exato. Grade curricular e puzzle de dependencia.',
+        reacao:
+            'Exato. A grade curricular depende de ordem, horário e pré-requisito.',
       ),
       DialogueOptionModel(
-        texto: 'Escolher qualquer turma disponivel.',
+        texto: 'Escolher qualquer turma disponível.',
         correta: false,
-        reacao: 'Escolha aleatoria pode criar outro conflito.',
+        reacao: 'Escolha aleatória pode criar outro conflito.',
       ),
       DialogueOptionModel(
-        texto: 'Ignorar pre-requisito.',
+        texto: 'Ignorar pré-requisito.',
         correta: false,
-        reacao: 'Pre-requisito ignorado costuma virar parede invisivel.',
+        reacao: 'Pré-requisito ignorado costuma bloquear a matrícula depois.',
       ),
     ],
     challenge: StageChallengeModel(
       title: 'Enigma da grade',
       description:
-          'Uma disciplina exige pre-requisito e nao pode bater horario com outra. Qual criterio vem primeiro?',
+          'Uma disciplina exige pré-requisito e não pode bater horário com outra. Qual critério vem primeiro?',
       rewardXp: 120,
       rewardText: 'Conflito de grade identificado.',
       options: [
         DialogueOptionModel(
-          texto: 'Validar pre-requisito e depois conferir choque de horario.',
+          texto: 'Validar pré-requisito e depois conferir choque de horário.',
           correta: true,
-          reacao: 'Grade resolvida. Agora recupere energia no Refeitorio.',
+          reacao: 'Grade resolvida. Agora recupere energia no Refeitório.',
         ),
         DialogueOptionModel(
           texto: 'Priorizar a sala mais perto.',
           correta: false,
-          reacao: 'Conforto nao resolve regra academica.',
+          reacao: 'Conforto não resolve regra acadêmica.',
         ),
         DialogueOptionModel(
           texto: 'Escolher a materia com nome mais facil.',
           correta: false,
-          reacao: 'O sistema nao aceita carisma como pre-requisito.',
+          reacao: 'O sistema não aceita simpatia como pré-requisito.',
         ),
       ],
     ),
     completionText: 'Conflito tecnico entendido. Hora de recuperar energia.',
-    nextHint: 'Procure o Refeitorio para recuperar energia.',
+    nextHint: 'Procure o Refeitório para recuperar energia.',
   ),
   GameEnvironmentModel(
     id: 'refeitorio',
-    nome: 'Refeitorio',
-    descricao: 'Ponto de encontro para pausa, estrategia e energia.',
+    nome: 'Refeitório',
+    descricao: 'Ponto de encontro para pausa, estratégia e energia.',
     latitude: -22.83308,
     longitude: -47.05202,
     raioMetros: 60,
     stageNumber: 4,
-    missionTitle: 'Resolver o cartao nao ativado',
+    missionTitle: 'Resolver o cartão não ativado',
     missionDescription:
-        'A pausa vira desafio quando seu cartao ainda nao funciona.',
+        'A pausa vira desafio quando seu cartão ainda não funciona.',
     introText:
-        'A fome chega junto com outra falha: seu cartao nao foi ativado. Uma veterana percebe sua cara de loading infinito.',
+        'A fome chega junto com outra falha: seu cartão ainda não foi ativado. Uma veterana percebe sua indecisão na fila.',
     npc: NpcModel(
       nome: 'Bia',
       descricao: 'Veterana que sabe onde todo mundo se encontra entre aulas.',
       falaInicial:
-          'Primeiro dia sempre cobra pedágio. Se o cartao falhou, voce precisa resolver sem travar a fila.',
+          'Primeiro dia sempre traz surpresa. Se o cartão falhou, você precisa resolver sem travar a fila.',
     ),
     dialogue: [
       DialogueOptionModel(
-        texto: 'Sair da fila, pedir orientacao e procurar ativacao.',
+        texto: 'Sair da fila, pedir orientação e procurar ativação.',
         correta: true,
-        reacao: 'Boa. Voce evita caos social e ganha uma pista.',
+        reacao: 'Boa. Você evita confusão na fila e ganha uma pista.',
       ),
       DialogueOptionModel(
-        texto: 'Insistir varias vezes no leitor.',
+        texto: 'Insistir várias vezes no leitor.',
         correta: false,
-        reacao: 'O leitor nao sobe de nivel com insistencia.',
+        reacao: 'O leitor não muda só porque você tentou de novo.',
       ),
       DialogueOptionModel(
         texto: 'Pedir para alguem pagar sem explicar.',
         correta: false,
-        reacao: 'Melhor resolver a causa, nao criar nova side quest.',
+        reacao: 'Melhor resolver a causa, não criar outro problema.',
       ),
     ],
     challenge: StageChallengeModel(
       title: 'Cartao bloqueado',
       description:
-          'Qual atitude resolve o problema e mantem a convivencia em paz?',
+          'Qual atitude resolve o problema e mantém a convivência em paz?',
       rewardXp: 90,
       rewardText: 'Energia social recuperada.',
       options: [
@@ -244,24 +249,24 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
           reacao: 'Perfeito. Bia aponta o caminho do H15.',
         ),
         DialogueOptionModel(
-          texto: 'Ficar parado ate alguem resolver.',
+          texto: 'Ficar parado até alguém resolver.',
           correta: false,
-          reacao: 'Fila parada reduz reputacao.',
+          reacao: 'Fila parada atrapalha todo mundo.',
         ),
         DialogueOptionModel(
-          texto: 'Ignorar o almoco e seguir sem energia.',
+          texto: 'Ignorar o almoço e seguir sem energia.',
           correta: false,
-          reacao: 'Sem energia, o proximo capitulo fica mais dificil.',
+          reacao: 'Sem energia, a próxima etapa fica mais difícil.',
         ),
       ],
     ),
     completionText: 'Energia recuperada. O caminho para o H15 foi revelado.',
-    nextHint: 'Siga para o Predio H15.',
+    nextHint: 'Siga para o Prédio H15.',
   ),
   GameEnvironmentModel(
     id: 'predio_h15',
-    nome: 'Predio H15',
-    descricao: 'Predio de passagem, aulas e novas conexoes.',
+    nome: 'Prédio H15',
+    descricao: 'Prédio de passagem, aulas e novas conexões.',
     latitude: -22.83409,
     longitude: -47.05265,
     raioMetros: 60,
@@ -270,18 +275,18 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     missionDescription:
         'Identifique a sala certa antes que a aula importante comece.',
     introText:
-        'O H15 parece simples ate voce ver placas, corredores e turmas parecidas. Um monitor oferece uma pista.',
+        'O H15 parece simples até você ver placas, corredores e turmas parecidas. Um monitor oferece uma pista.',
     npc: NpcModel(
       nome: 'Lucas',
       descricao: 'Monitor que acompanha projetos e aponta atalhos praticos.',
       falaInicial:
-          'Sua sala aparece no horario, mas o bloco confunde muita gente. Leia o codigo antes de escolher.',
+          'Sua sala aparece no horário, mas o bloco confunde muita gente. Leia o código antes de escolher.',
     ),
     dialogue: [
       DialogueOptionModel(
-        texto: 'Conferir bloco, andar e numero da sala.',
+        texto: 'Conferir bloco, andar e número da sala.',
         correta: true,
-        reacao: 'Isso. Codigo de sala e coordenada de dungeon academica.',
+        reacao: 'Isso. Código de sala é como coordenada dentro do campus.',
       ),
       DialogueOptionModel(
         texto: 'Entrar na primeira sala cheia.',
@@ -304,7 +309,7 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
         DialogueOptionModel(
           texto: 'Subir ao 2o andar e procurar a sala 204 no H15.',
           correta: true,
-          reacao: 'Sala localizada. O Laboratorio foi desbloqueado.',
+          reacao: 'Sala localizada. O Laboratório foi desbloqueado.',
         ),
         DialogueOptionModel(
           texto: 'Procurar sala 204 em qualquer predio.',
@@ -314,16 +319,16 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
         DialogueOptionModel(
           texto: 'Esperar o professor aparecer no corredor.',
           correta: false,
-          reacao: 'Estrategia passiva. O relogio nao perdoa.',
+          reacao: 'Estratégia passiva. O relógio não perdoa.',
         ),
       ],
     ),
-    completionText: 'H15 concluido. A etapa final esta aberta.',
-    nextHint: 'Va ao Laboratorio de Computadores para finalizar.',
+    completionText: 'H15 concluído. A etapa final está aberta.',
+    nextHint: 'Vá ao Laboratório de Computadores para finalizar.',
   ),
   GameEnvironmentModel(
     id: 'laboratorio',
-    nome: 'Laboratorio de Computadores',
+    nome: 'Laboratório de Computadores',
     descricao: 'Local onde a jornada vira entrega final.',
     latitude: -22.83409,
     longitude: -47.05265,
@@ -333,23 +338,24 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     missionDescription:
         'Use postura colaborativa para concluir o primeiro dia.',
     introText:
-        'No laboratorio, seu acesso finalmente funciona. Antes de comemorar, um colega trava no mesmo problema que voce enfrentou.',
+        'No laboratório, seu acesso finalmente funciona. Antes de comemorar, um colega passa pelo mesmo problema que você enfrentou.',
     npc: NpcModel(
-      nome: 'IA do Laboratorio',
-      descricao: 'Sistema experimental que valida escolhas colaborativas.',
+      nome: 'Tutor do Laboratório',
+      descricao: 'Monitor do espaço, focado em orientar alunos com calma.',
       falaInicial:
-          'Ultima validacao: o que voce faz quando outro calouro fica preso no fluxo que voce acabou de vencer?',
+          'Última situação: o que você faz quando outro calouro fica preso no caminho que você acabou de entender?',
     ),
     dialogue: [
       DialogueOptionModel(
         texto: 'Compartilhar o caminho e explicar as pistas.',
         correta: true,
-        reacao: 'Validado. Conhecimento compartilhado fecha a jornada.',
+        reacao: 'Boa escolha. Conhecimento compartilhado fecha a jornada.',
       ),
       DialogueOptionModel(
         texto: 'Dizer que cada um precisa descobrir sozinho.',
         correta: false,
-        reacao: 'XP individual nao basta para um campus cooperativo.',
+        reacao:
+            'Aprender sozinho ajuda, mas o campus funciona melhor com colaboração.',
       ),
       DialogueOptionModel(
         texto: 'Fazer tudo por ele sem explicar.',
@@ -360,28 +366,29 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     challenge: StageChallengeModel(
       title: 'Atitude de campus',
       description:
-          'Escolha a melhor forma de ajudar um colega com a matricula travada.',
+          'Escolha a melhor forma de ajudar um colega com a matrícula travada.',
       rewardXp: 150,
       rewardText: 'Espírito colaborativo desbloqueado.',
       options: [
         DialogueOptionModel(
-          texto: 'Explicar o passo a passo e acompanhar ate ele entender.',
+          texto: 'Explicar o passo a passo e acompanhar até ele entender.',
           correta: true,
-          reacao: 'Conclusao perfeita. Voce virou referencia de primeiro dia.',
+          reacao: 'Conclusão perfeita. Você virou referência de primeiro dia.',
         ),
         DialogueOptionModel(
           texto: 'Mandar procurar sozinho na internet.',
           correta: false,
-          reacao: 'Rapido, mas pouco humano.',
+          reacao: 'Rápido, mas pouco acolhedor.',
         ),
         DialogueOptionModel(
           texto: 'Pegar o celular dele e resolver tudo.',
           correta: false,
-          reacao: 'Resolver sem ensinar nao cria progresso duradouro.',
+          reacao: 'Resolver sem ensinar não cria autonomia.',
         ),
       ],
     ),
-    completionText: 'Projeto integrador concluido. O campus virou jogo.',
-    nextHint: 'Conclua a missao final no laboratorio.',
+    completionText:
+        'Projeto integrador concluído. O campus virou experiência interativa.',
+    nextHint: 'Conclua a missão final no laboratório.',
   ),
 ];

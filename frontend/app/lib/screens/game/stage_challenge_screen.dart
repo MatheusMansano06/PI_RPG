@@ -24,7 +24,7 @@ enum _MiniGameType { simon, reflex, mole }
 
 class _StageChallengeScreenState extends State<StageChallengeScreen> {
   bool _completed = false;
-  String _status = 'Conclua o mini-game para liberar a fase.';
+  String _status = 'Conclua o desafio para liberar a fase.';
   int _attempt = 0;
 
   _MiniGameType get _gameType {
@@ -40,16 +40,18 @@ class _StageChallengeScreenState extends State<StageChallengeScreen> {
 
   String get _gameTitle {
     return switch (_gameType) {
-      _MiniGameType.simon => 'Mini-game: Simon Says',
-      _MiniGameType.reflex => 'Mini-game: Teste de Reflexo',
-      _MiniGameType.mole => 'Mini-game: Whack-a-Mole',
+      _MiniGameType.simon => 'Desafio: sequência de memória',
+      _MiniGameType.reflex => 'Desafio: teste de reflexo',
+      _MiniGameType.mole => 'Desafio: alvo rápido',
     };
   }
 
   String get _gameSubtitle {
     return switch (_gameType) {
-      _MiniGameType.simon => 'Memorize a sequencia de simbolos e repita sem errar.',
-      _MiniGameType.reflex => 'Espere o sinal verde e toque o mais rapido possivel.',
+      _MiniGameType.simon =>
+        'Memorize a sequência de símbolos e repita sem errar.',
+      _MiniGameType.reflex =>
+        'Espere o sinal verde e toque o mais rápido possível.',
       _MiniGameType.mole => 'Acerte 8 alvos em 15 segundos para vencer.',
     };
   }
@@ -87,7 +89,7 @@ class _StageChallengeScreenState extends State<StageChallengeScreen> {
                           GameHudBadge(
                             icon: Icons.sports_esports_outlined,
                             label: 'Modo',
-                            value: _gameTitle.replaceFirst('Mini-game: ', ''),
+                            value: _gameTitle.replaceFirst('Desafio: ', ''),
                           ),
                           GameHudBadge(
                             icon: Icons.bolt_outlined,
@@ -98,7 +100,7 @@ class _StageChallengeScreenState extends State<StageChallengeScreen> {
                       ),
                       SizedBox(height: compact ? 16 : 22),
                       GameSectionTitle(
-                        eyebrow: 'DESAFIO DA MISSAO',
+                        eyebrow: 'DESAFIO DA MISSÃO',
                         title: _gameTitle,
                         subtitle: _gameSubtitle,
                         icon: Icons.videogame_asset_outlined,
@@ -108,10 +110,14 @@ class _StageChallengeScreenState extends State<StageChallengeScreen> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF052E16).withValues(alpha: 0.42),
+                          color: const Color(
+                            0xFF052E16,
+                          ).withValues(alpha: 0.42),
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: const Color(0xFF4ADE80).withValues(alpha: 0.4),
+                            color: const Color(
+                              0xFF4ADE80,
+                            ).withValues(alpha: 0.4),
                           ),
                         ),
                         child: Text(
@@ -144,14 +150,14 @@ class _StageChallengeScreenState extends State<StageChallengeScreen> {
                         )
                       else
                         GameButton(
-                          label: 'Reiniciar mini-game',
+                          label: 'Reiniciar desafio',
                           icon: Icons.refresh,
                           variant: GameButtonVariant.secondary,
                           compact: compact,
                           onPressed: () {
                             setState(() {
                               _attempt++;
-                              _status = 'Mini-game reiniciado. Boa sorte.';
+                              _status = 'Desafio reiniciado. Boa sorte.';
                             });
                           },
                         ),
@@ -207,7 +213,11 @@ class _StageChallengeScreenState extends State<StageChallengeScreen> {
 }
 
 class _SimonMiniGame extends StatefulWidget {
-  const _SimonMiniGame({required this.onStatus, required this.onWin, super.key});
+  const _SimonMiniGame({
+    required this.onStatus,
+    required this.onWin,
+    super.key,
+  });
 
   final ValueChanged<String> onStatus;
   final ValueChanged<String> onWin;
@@ -237,7 +247,7 @@ class _SimonMiniGameState extends State<_SimonMiniGame> {
   }
 
   Future<void> _playSequence() async {
-    widget.onStatus('Memorize a sequencia...');
+    widget.onStatus('Memorize a sequência...');
     for (var i = 0; i < _sequence.length; i++) {
       if (!mounted) {
         return;
@@ -254,7 +264,7 @@ class _SimonMiniGameState extends State<_SimonMiniGame> {
       return;
     }
     setState(() => _playingBack = false);
-    widget.onStatus('Agora repita a sequencia correta.');
+    widget.onStatus('Agora repita a sequência correta.');
   }
 
   void _tap(int index) {
@@ -264,7 +274,7 @@ class _SimonMiniGameState extends State<_SimonMiniGame> {
     _input.add(index);
     final pos = _input.length - 1;
     if (_input[pos] != _sequence[pos]) {
-      widget.onStatus('Errou. Nova sequencia em 1s...');
+      widget.onStatus('Errou. Nova sequência em 1s...');
       setState(() {
         _playingBack = true;
         _showIndex = -1;
@@ -278,14 +288,19 @@ class _SimonMiniGameState extends State<_SimonMiniGame> {
       return;
     }
     if (_input.length == _sequence.length) {
-      widget.onWin('Perfeito. Sequencia concluida.');
+      widget.onWin('Perfeito. Sequência concluída.');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     const symbols = ['▲', '■', '●', '◆'];
-    const colors = [Color(0xFF22C55E), Color(0xFF3B82F6), Color(0xFFF59E0B), Color(0xFFA855F7)];
+    const colors = [
+      Color(0xFF22C55E),
+      Color(0xFF3B82F6),
+      Color(0xFFF59E0B),
+      Color(0xFFA855F7),
+    ];
 
     return Wrap(
       spacing: 10,
@@ -301,7 +316,10 @@ class _SimonMiniGameState extends State<_SimonMiniGame> {
             decoration: BoxDecoration(
               color: active ? colors[i] : const Color(0xFF0F172A),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: colors[i].withValues(alpha: 0.85), width: 2),
+              border: Border.all(
+                color: colors[i].withValues(alpha: 0.85),
+                width: 2,
+              ),
               boxShadow: active
                   ? [
                       BoxShadow(
@@ -330,7 +348,11 @@ class _SimonMiniGameState extends State<_SimonMiniGame> {
 }
 
 class _ReflexMiniGame extends StatefulWidget {
-  const _ReflexMiniGame({required this.onStatus, required this.onWin, super.key});
+  const _ReflexMiniGame({
+    required this.onStatus,
+    required this.onWin,
+    super.key,
+  });
 
   final ValueChanged<String> onStatus;
   final ValueChanged<String> onWin;
@@ -349,7 +371,7 @@ class _ReflexMiniGameState extends State<_ReflexMiniGame> {
   @override
   void initState() {
     super.initState();
-    widget.onStatus('Espere o painel ficar verde e toque rapido.');
+    widget.onStatus('Espere o painel ficar verde e toque rápido.');
     _timer = Timer(Duration(milliseconds: 1200 + _rng.nextInt(1800)), () {
       if (!mounted) {
         return;
@@ -377,7 +399,7 @@ class _ReflexMiniGameState extends State<_ReflexMiniGame> {
       setState(() {
         _finished = true;
       });
-      widget.onStatus('Queimou a largada. Reinicie o mini-game.');
+      widget.onStatus('Queimou a largada. Reinicie o desafio.');
       return;
     }
 
@@ -386,7 +408,7 @@ class _ReflexMiniGameState extends State<_ReflexMiniGame> {
       _finished = true;
     });
     if (elapsed <= 450) {
-      widget.onWin('Reflexo top: ${elapsed}ms. Fase liberada.');
+      widget.onWin('Reflexo excelente: ${elapsed}ms. Fase liberada.');
     } else {
       widget.onStatus('Tempo ${elapsed}ms. Meta <= 450ms. Reinicie.');
     }
@@ -403,12 +425,12 @@ class _ReflexMiniGameState extends State<_ReflexMiniGame> {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.25), width: 2),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.25),
+            width: 2,
+          ),
           boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: 0.35),
-              blurRadius: 20,
-            ),
+            BoxShadow(color: color.withValues(alpha: 0.35), blurRadius: 20),
           ],
         ),
         child: Center(
@@ -428,7 +450,11 @@ class _ReflexMiniGameState extends State<_ReflexMiniGame> {
 }
 
 class _WhackMiniGame extends StatefulWidget {
-  const _WhackMiniGame({required this.onStatus, required this.onWin, super.key});
+  const _WhackMiniGame({
+    required this.onStatus,
+    required this.onWin,
+    super.key,
+  });
 
   final ValueChanged<String> onStatus;
   final ValueChanged<String> onWin;
@@ -529,10 +555,14 @@ class _WhackMiniGameState extends State<_WhackMiniGame> {
                 width: 86,
                 height: 86,
                 decoration: BoxDecoration(
-                  color: active ? const Color(0xFF10B981) : const Color(0xFF1E293B),
+                  color: active
+                      ? const Color(0xFF10B981)
+                      : const Color(0xFF1E293B),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: active ? const Color(0xFF6EE7B7) : const Color(0xFF334155),
+                    color: active
+                        ? const Color(0xFF6EE7B7)
+                        : const Color(0xFF334155),
                     width: 2,
                   ),
                 ),

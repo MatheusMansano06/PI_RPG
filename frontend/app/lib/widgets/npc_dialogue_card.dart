@@ -136,13 +136,29 @@ class NpcDialogueCard extends StatelessWidget {
 ({String avatar, String role, Color color}) _npcPersona(String npcName) {
   final lower = npcName.toLowerCase();
   if (lower.contains('professor')) {
-    return (avatar: '🧠', role: 'MESTRE ESTRATEGA', color: const Color(0xFF60A5FA));
+    return (
+      avatar: '🧠',
+      role: 'MESTRE ESTRATEGA',
+      color: const Color(0xFF60A5FA),
+    );
   }
   if (lower.contains('bia') || lower.contains('helena')) {
-    return (avatar: '🛰️', role: 'GUIA DO CAMPUS', color: const Color(0xFF34D399));
+    return (
+      avatar: '🛰️',
+      role: 'GUIA DO CAMPUS',
+      color: const Color(0xFF34D399),
+    );
   }
   if (lower.contains('ze')) {
-    return (avatar: '🛡️', role: 'SENTINELA DA ENTRADA', color: const Color(0xFFF59E0B));
+    return (
+      avatar: '🛡️',
+      role: 'SENTINELA DA ENTRADA',
+      color: const Color(0xFFF59E0B),
+    );
   }
-  return (avatar: '🎯', role: 'NPC ALIADO', color: const Color(0xFFA78BFA));
+  return (
+    avatar: '🎯',
+    role: 'PERSONAGEM ALIADO',
+    color: const Color(0xFFA78BFA),
+  );
 }

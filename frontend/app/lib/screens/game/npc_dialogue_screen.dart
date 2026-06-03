@@ -293,7 +293,7 @@ class _SpeechBubble extends StatelessWidget {
   if (lower.contains('professor marcos')) {
     return (
       imagePath: 'assets/images/characters/professor_marcos.png',
-      role: 'MESTRE ESTRATEGA',
+      role: 'PROFESSOR ORIENTADOR',
       color: const Color(0xFF60A5FA),
     );
   }
@@ -321,13 +321,13 @@ class _SpeechBubble extends StatelessWidget {
   if (lower.contains('ze')) {
     return (
       imagePath: 'assets/images/characters/seu_ze.png',
-      role: 'SENTINELA DA ENTRADA',
+      role: 'ORIENTADOR DA ENTRADA',
       color: const Color(0xFFF59E0B),
     );
   }
   return (
-    imagePath: 'assets/images/characters/ia_laboratorio.png',
-    role: 'IA DO LABORATORIO',
+    imagePath: 'assets/images/characters/tutor_laboratorio.png',
+    role: 'TUTOR DO LABORATÓRIO',
     color: const Color(0xFFA78BFA),
   );
 }

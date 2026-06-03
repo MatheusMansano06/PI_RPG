@@ -33,15 +33,15 @@ class StartScreen extends StatelessWidget {
                   top: 76,
                   child: _SideHud(
                     title: 'Perfil do Calouro',
-                    lines: ['Nivel 1', 'XP 0/100', 'Campus I'],
+                    lines: ['Nível 1', 'XP 0/100', 'Campus I'],
                   ),
                 ),
                 Positioned(
                   right: 42,
                   bottom: 76,
                   child: _SideHud(
-                    title: 'Missao Ativa',
-                    lines: ['Primeiro Dia', 'Sobrevivencia', 'Mapa liberado'],
+                    title: 'Missão ativa',
+                    lines: ['Primeiro dia', 'Sobrevivência', 'Mapa liberado'],
                     alignRight: true,
                   ),
                 ),
@@ -71,7 +71,7 @@ class StartScreen extends StatelessWidget {
                               ),
                               GameHudBadge(
                                 icon: Icons.bolt_outlined,
-                                label: 'Nivel',
+                                label: 'Nível',
                                 value: '1',
                               ),
                               GameHudBadge(
@@ -84,15 +84,15 @@ class StartScreen extends StatelessWidget {
                           SizedBox(height: compact ? 16 : 22),
                           GameSectionTitle(
                             eyebrow: 'PRIMEIRO DIA',
-                            title: 'Missao Sobrevivencia',
+                            title: 'Missão Sobrevivência',
                             subtitle:
-                                'Escolha seu proximo passo e avance pela aventura narrativa do Campus I.',
+                                'Escolha o próximo passo e avance por uma história inspirada no Campus I.',
                             icon: Icons.travel_explore,
                             compact: compact,
                           ),
                           SizedBox(height: compact ? 18 : 24),
                           GameButton(
-                            label: 'Iniciar Jornada',
+                            label: 'Iniciar jornada',
                             icon: Icons.play_arrow,
                             compact: compact,
                             onPressed: () {
@@ -106,7 +106,7 @@ class StartScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 12),
                           GameButton(
-                            label: 'Continuar Missao',
+                            label: 'Continuar missão',
                             icon: Icons.map_outlined,
                             variant: GameButtonVariant.secondary,
                             compact: compact,

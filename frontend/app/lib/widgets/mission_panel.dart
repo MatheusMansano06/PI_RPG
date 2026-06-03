@@ -48,7 +48,9 @@ class MissionPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MissionCard(
-      title: missaoAtual.replaceFirst('Missao atual: ', ''),
+      title: missaoAtual
+          .replaceFirst('Missão atual: ', '')
+          .replaceFirst('Missao atual: ', ''),
       hint: dicaNarrativa,
       distanceText: distanciaTexto,
       apiStatusText: _gpsStatusText,

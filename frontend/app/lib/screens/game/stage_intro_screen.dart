@@ -61,7 +61,7 @@ class StageIntroScreen extends StatelessWidget {
                       ),
                       SizedBox(height: compact ? 14 : 20),
                       GameSectionTitle(
-                        eyebrow: 'BRIEFING DA FASE',
+                        eyebrow: 'ANTES DE COMEÇAR',
                         title: environment.nome,
                         subtitle: environment.introText,
                         icon: Icons.assignment_outlined,
@@ -71,7 +71,7 @@ class StageIntroScreen extends StatelessWidget {
                       _InfoGrid(environment: environment),
                       SizedBox(height: compact ? 16 : 22),
                       GameButton(
-                        label: 'Iniciar exploracao',
+                        label: 'Iniciar exploração',
                         icon: Icons.theater_comedy_outlined,
                         compact: compact,
                         onPressed: () {
@@ -111,7 +111,7 @@ class _InfoGrid extends StatelessWidget {
         final tiles = [
           _InfoTile(
             icon: Icons.flag,
-            label: 'Missao',
+            label: 'Missão',
             value: environment.missionTitle,
           ),
           _InfoTile(
@@ -121,7 +121,7 @@ class _InfoGrid extends StatelessWidget {
           ),
           _InfoTile(
             icon: Icons.person_4_outlined,
-            label: 'NPC',
+            label: 'Personagem',
             value: environment.npc.nome,
           ),
           _InfoTile(

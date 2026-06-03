@@ -73,7 +73,7 @@ class AuthService {
         credentials.toJson(),
       );
       if (response is! Map<String, dynamic>) {
-        throw const AuthException('Resposta invalida do servidor.');
+        throw const AuthException('Resposta inválida do servidor.');
       }
 
       return AuthSession.fromJson(response);
@@ -106,7 +106,7 @@ class AuthService {
         credentials.toJson(),
       );
       if (response is! Map<String, dynamic>) {
-        throw const AuthException('Resposta invalida do servidor.');
+        throw const AuthException('Resposta inválida do servidor.');
       }
 
       return AuthSession.fromJson(response);
@@ -124,7 +124,7 @@ class AuthService {
     }
 
     if (!email.contains('@')) {
-      throw const AuthException('Informe um e-mail valido.');
+      throw const AuthException('Informe um e-mail válido.');
     }
   }
 

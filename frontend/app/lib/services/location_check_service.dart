@@ -1,7 +1,8 @@
 import '../core/network/api_client.dart';
 
 class LocationCheckService {
-  LocationCheckService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
+  LocationCheckService({ApiClient? apiClient})
+    : _apiClient = apiClient ?? ApiClient();
 
   final ApiClient _apiClient;
 

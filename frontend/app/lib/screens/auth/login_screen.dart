@@ -135,9 +135,9 @@ class _LoginScreenState extends State<LoginScreen>
                   left: 44,
                   top: 82,
                   child: _SceneDetail(
-                    eyebrow: 'ARCO 01',
+                    eyebrow: 'INÍCIO',
                     title: 'Primeiro acesso',
-                    detail: 'Diario de bordo liberado',
+                    detail: 'Registro do aluno e progresso liberados',
                     icon: Icons.menu_book_outlined,
                   ),
                 ),
@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen>
                   child: _SceneDetail(
                     eyebrow: 'SETOR',
                     title: 'Campus I',
-                    detail: 'Rotas, pistas e NPCs ativos',
+                    detail: 'Rotas, pistas e personagens ativos',
                     icon: Icons.account_balance_outlined,
                     alignRight: true,
                   ),
@@ -182,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen>
                               if (_isRegisterMode) ...[
                                 GameTextField(
                                   controller: _nomeController,
-                                  label: 'Nome do personagem',
+                                  label: 'Nome do aluno',
                                   icon: Icons.person_outline,
                                   textInputAction: TextInputAction.next,
                                   enabled: !_isLoading,
@@ -232,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                               _JourneyButton(
                                 label: _isRegisterMode
-                                    ? 'Cadastrar e Entrar'
+                                    ? 'Cadastrar e entrar'
                                     : 'Entrar na Jornada',
                                 icon: _isRegisterMode
                                     ? Icons.person_add_alt_1
@@ -244,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen>
                               _JourneyButton(
                                 label: _isRegisterMode
                                     ? 'Voltar para login'
-                                    : 'Criar novo personagem',
+                                    : 'Criar novo perfil',
                                 icon: _isRegisterMode
                                     ? Icons.login
                                     : Icons.person_add_alt_1,
@@ -281,7 +281,7 @@ class _MissionBadge extends StatelessWidget {
         _Badge(icon: Icons.map_outlined, label: 'Campus I • PUC-Campinas'),
         _Badge(
           icon: Icons.sports_esports_outlined,
-          label: 'Modo aventura • missoes e mini-games',
+          label: 'Modo aventura • missões e desafios',
         ),
       ],
     );
@@ -408,7 +408,7 @@ class _TitleBlock extends StatelessWidget {
         ),
         SizedBox(height: compact ? 10 : 14),
         Text(
-          'Login do Explorador',
+          'Entrada do aluno',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -419,7 +419,7 @@ class _TitleBlock extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          'Mapa de Missões',
+          'Mapa de missões',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: const Color(0xFF4ADE80),
@@ -431,7 +431,7 @@ class _TitleBlock extends StatelessWidget {
         const _DecorativeRule(),
         SizedBox(height: compact ? 10 : 14),
         const Text(
-          'Entre para explorar o Campus em estilo jogo com desafios reais.',
+          'Entre para explorar o campus com desafios inspirados no primeiro dia de aula.',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color(0xFFCBD5E1),
