@@ -67,7 +67,7 @@ class LocalizacaoService {
   Stream<Position> acompanharPosicao() {
     final settings = _locationSettings(
       accuracy: LocationAccuracy.bestForNavigation,
-      distanceFilter: 0,
+      distanceFilter: 3,
     );
 
     return Geolocator.getPositionStream(locationSettings: settings);

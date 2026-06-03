@@ -1,28 +1,34 @@
 import '../core/network/api_client.dart';
 
 class AuthCredentials {
-  const AuthCredentials({
-    required this.email,
-    required this.senha,
-  });
+  const AuthCredentials({required this.email, required this.senha});
 
   final String email;
   final String senha;
 
   Map<String, dynamic> toJson() {
-    return {
-      'email': email.trim(),
-      'senha': senha,
-    };
+    return {'email': email.trim(), 'senha': senha};
+  }
+}
+
+class RegisterCredentials {
+  const RegisterCredentials({
+    required this.nome,
+    required this.email,
+    required this.senha,
+  });
+
+  final String nome;
+  final String email;
+  final String senha;
+
+  Map<String, dynamic> toJson() {
+    return {'nome': nome.trim(), 'email': email.trim(), 'senha': senha};
   }
 }
 
 class AuthSession {
-  const AuthSession({
-    required this.email,
-    required this.nome,
-    this.token,
-  });
+  const AuthSession({required this.email, required this.nome, this.token});
 
   factory AuthSession.fromJson(Map<String, dynamic> json) {
     return AuthSession(
@@ -44,15 +50,11 @@ class AuthException implements Exception {
 }
 
 class AuthService {
-  AuthService._({
-    ApiClient? apiClient,
-    this.usarBackend = false,
-  }) : apiClient = apiClient ?? ApiClient();
+  AuthService._({ApiClient? apiClient}) : apiClient = apiClient ?? ApiClient();
 
-  static final AuthService instance = AuthService._(usarBackend: false);
+  static final AuthService instance = AuthService._();
 
   final ApiClient apiClient;
-  final bool usarBackend;
 
   Future<AuthSession> login({
     required String email,
@@ -61,26 +63,48 @@ class AuthService {
     final credentials = AuthCredentials(email: email, senha: senha);
     _validarCredenciais(credentials);
 
-    if (usarBackend) {
-      return _loginComBackend(credentials);
-    }
-
-    return _loginTemporario(credentials);
-  }
-
-  Future<AuthSession> _loginTemporario(AuthCredentials credentials) async {
-    await Future<void>.delayed(const Duration(milliseconds: 700));
-
-    return AuthSession(
-      email: credentials.email.trim(),
-      nome: 'Jogador',
-      token: 'fake-session-token',
-    );
+    return _loginComBackend(credentials);
   }
 
   Future<AuthSession> _loginComBackend(AuthCredentials credentials) async {
     try {
-      final response = await apiClient.post('/auth/login', credentials.toJson());
+      final response = await apiClient.post(
+        '/auth/login',
+        credentials.toJson(),
+      );
+      if (response is! Map<String, dynamic>) {
+        throw const AuthException('Resposta invalida do servidor.');
+      }
+
+      return AuthSession.fromJson(response);
+    } on ApiException catch (error) {
+      throw AuthException(error.message);
+    }
+  }
+
+  Future<AuthSession> register({
+    required String nome,
+    required String email,
+    required String senha,
+  }) async {
+    final credentials = RegisterCredentials(
+      nome: nome,
+      email: email,
+      senha: senha,
+    );
+    _validarCadastro(credentials);
+
+    return _registerComBackend(credentials);
+  }
+
+  Future<AuthSession> _registerComBackend(
+    RegisterCredentials credentials,
+  ) async {
+    try {
+      final response = await apiClient.post(
+        '/auth/register',
+        credentials.toJson(),
+      );
       if (response is! Map<String, dynamic>) {
         throw const AuthException('Resposta invalida do servidor.');
       }
@@ -101,6 +125,24 @@ class AuthService {
 
     if (!email.contains('@')) {
       throw const AuthException('Informe um e-mail valido.');
+    }
+  }
+
+  void _validarCadastro(RegisterCredentials credentials) {
+    final nome = credentials.nome.trim();
+    final authCredentials = AuthCredentials(
+      email: credentials.email,
+      senha: credentials.senha,
+    );
+
+    if (nome.isEmpty) {
+      throw const AuthException('Informe o nome do personagem.');
+    }
+
+    _validarCredenciais(authCredentials);
+
+    if (credentials.senha.trim().length < 6) {
+      throw const AuthException('A senha precisa ter pelo menos 6 caracteres.');
     }
   }
 }

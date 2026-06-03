@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../core/navigation/cinematic_route.dart';
+import '../../services/cinematic_audio_service.dart';
 import '../../services/auth_service.dart';
+import '../../widgets/cinematic_cloud_layer.dart';
 import '../../widgets/game_background.dart';
 import '../../widgets/game_card.dart';
 import '../../widgets/game_text_field.dart';
@@ -15,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
+  final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
   final _authService = AuthService.instance;
@@ -24,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen>
   late final Animation<Offset> _slideAnimation;
 
   bool _isLoading = false;
+  bool _isRegisterMode = false;
 
   @override
   void initState() {
@@ -46,12 +51,13 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void dispose() {
     _animationController.dispose();
+    _nomeController.dispose();
     _emailController.dispose();
     _senhaController.dispose();
     super.dispose();
   }
 
-  Future<void> _entrar() async {
+  Future<void> _submit() async {
     if (_isLoading) {
       return;
     }
@@ -59,18 +65,27 @@ class _LoginScreenState extends State<LoginScreen>
     setState(() => _isLoading = true);
 
     try {
-      await _authService.login(
-        email: _emailController.text,
-        senha: _senhaController.text,
-      );
+      if (_isRegisterMode) {
+        await _authService.register(
+          nome: _nomeController.text,
+          email: _emailController.text,
+          senha: _senhaController.text,
+        );
+      } else {
+        await _authService.login(
+          email: _emailController.text,
+          senha: _senhaController.text,
+        );
+      }
 
       if (!mounted) {
         return;
       }
 
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute<void>(builder: (_) => const StartScreen()),
-      );
+      CinematicAudioService.instance.playCloudTransition();
+      Navigator.of(
+        context,
+      ).pushReplacement(buildCloudRoute(const StartScreen()));
     } on AuthException catch (error) {
       if (!mounted) {
         return;
@@ -85,11 +100,13 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   void _criarConta() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Criacao de conta entra em uma proxima etapa.'),
-      ),
-    );
+    if (_isLoading) {
+      return;
+    }
+
+    setState(() {
+      _isRegisterMode = !_isRegisterMode;
+    });
   }
 
   void _showError(String message) {
@@ -110,6 +127,9 @@ class _LoginScreenState extends State<LoginScreen>
         child: SafeArea(
           child: Stack(
             children: [
+              const Positioned.fill(
+                child: CinematicCloudLayer(opacity: 0.24, speed: 1.0),
+              ),
               if (showSceneDetails) ...const [
                 Positioned(
                   left: 44,
@@ -159,11 +179,22 @@ class _LoginScreenState extends State<LoginScreen>
                               SizedBox(height: compact ? 14 : 22),
                               _TitleBlock(compact: compact),
                               SizedBox(height: compact ? 16 : 22),
+                              if (_isRegisterMode) ...[
+                                GameTextField(
+                                  controller: _nomeController,
+                                  label: 'Nome do personagem',
+                                  icon: Icons.person_outline,
+                                  textInputAction: TextInputAction.next,
+                                  enabled: !_isLoading,
+                                ),
+                                SizedBox(height: compact ? 10 : 14),
+                              ],
                               GameTextField(
                                 controller: _emailController,
                                 label: 'E-mail',
                                 icon: Icons.badge_outlined,
                                 keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.next,
                                 enabled: !_isLoading,
                               ),
                               SizedBox(height: compact ? 10 : 14),
@@ -172,6 +203,8 @@ class _LoginScreenState extends State<LoginScreen>
                                 label: 'Senha',
                                 icon: Icons.enhanced_encryption_outlined,
                                 obscureText: true,
+                                textInputAction: TextInputAction.done,
+                                onSubmitted: (_) => _submit(),
                                 enabled: !_isLoading,
                               ),
                               SizedBox(height: compact ? 14 : 20),
@@ -187,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen>
                                             height: 28,
                                             child: CircularProgressIndicator(
                                               strokeWidth: 3,
-                                              color: Color(0xFFF5C542),
+                                              color: Color(0xFF22C55E),
                                             ),
                                           ),
                                         ),
@@ -198,15 +231,23 @@ class _LoginScreenState extends State<LoginScreen>
                                       ),
                               ),
                               _JourneyButton(
-                                label: 'Entrar na Jornada',
-                                icon: Icons.travel_explore,
+                                label: _isRegisterMode
+                                    ? 'Cadastrar e Entrar'
+                                    : 'Entrar na Jornada',
+                                icon: _isRegisterMode
+                                    ? Icons.person_add_alt_1
+                                    : Icons.travel_explore,
                                 compact: compact,
-                                onPressed: _isLoading ? null : _entrar,
+                                onPressed: _isLoading ? null : _submit,
                               ),
                               SizedBox(height: compact ? 10 : 12),
                               _JourneyButton(
-                                label: 'Criar novo personagem',
-                                icon: Icons.person_add_alt_1,
+                                label: _isRegisterMode
+                                    ? 'Voltar para login'
+                                    : 'Criar novo personagem',
+                                icon: _isRegisterMode
+                                    ? Icons.login
+                                    : Icons.person_add_alt_1,
                                 secondary: true,
                                 compact: compact,
                                 onPressed: _isLoading ? null : _criarConta,
@@ -237,13 +278,10 @@ class _MissionBadge extends StatelessWidget {
       spacing: 8,
       runSpacing: 8,
       children: const [
+        _Badge(icon: Icons.map_outlined, label: 'Campus I • PUC-Campinas'),
         _Badge(
-          icon: Icons.location_on_outlined,
-          label: 'Campus I • PUC-Campinas',
-        ),
-        _Badge(
-          icon: Icons.radar_outlined,
-          label: 'RPG interativo com geolocalização',
+          icon: Icons.sports_esports_outlined,
+          label: 'Modo aventura • missoes e mini-games',
         ),
       ],
     );
@@ -263,14 +301,14 @@ class _Badge extends StatelessWidget {
         color: const Color(0xFF0F172A).withValues(alpha: 0.74),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
-          color: const Color(0xFF38BDF8).withValues(alpha: 0.34),
+          color: const Color(0xFF22C55E).withValues(alpha: 0.42),
         ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
         child: Row(
           children: [
-            Icon(icon, color: const Color(0xFFBAE6FD), size: 15),
+            Icon(icon, color: const Color(0xFFA7F3D0), size: 15),
             const SizedBox(width: 6),
             Expanded(
               child: Text(
@@ -278,7 +316,7 @@ class _Badge extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  color: Color(0xFFE0F2FE),
+                  color: Color(0xFFD1FAE5),
                   fontSize: 12,
                   fontWeight: FontWeight.w800,
                 ),
@@ -315,12 +353,12 @@ class _SceneDetail extends StatelessWidget {
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: const Color(0xFFF5C542), size: 30),
+          Icon(icon, color: const Color(0xFF22C55E), size: 30),
           const SizedBox(height: 12),
           Text(
             eyebrow,
             style: const TextStyle(
-              color: Color(0xFFBAE6FD),
+              color: Color(0xFF6EE7B7),
               fontSize: 11,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.4,
@@ -365,12 +403,12 @@ class _TitleBlock extends StatelessWidget {
       children: [
         Icon(
           Icons.auto_stories,
-          color: const Color(0xFFF5C542),
+          color: const Color(0xFF22C55E),
           size: compact ? 42 : 54,
         ),
         SizedBox(height: compact ? 10 : 14),
         Text(
-          'Primeiro Dia',
+          'Login do Explorador',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -381,10 +419,10 @@ class _TitleBlock extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          'Missão Sobrevivência',
+          'Mapa de Missões',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: const Color(0xFFF5C542),
+            color: const Color(0xFF4ADE80),
             fontSize: compact ? 17 : 20,
             fontWeight: FontWeight.w900,
           ),
@@ -393,7 +431,7 @@ class _TitleBlock extends StatelessWidget {
         const _DecorativeRule(),
         SizedBox(height: compact ? 10 : 14),
         const Text(
-          'Entre no portal da jornada e continue sua aventura pelo Campus I.',
+          'Entre para explorar o Campus em estilo jogo com desafios reais.',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Color(0xFFCBD5E1),
@@ -420,11 +458,11 @@ class _DecorativeRule extends StatelessWidget {
           height: 7,
           margin: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            color: const Color(0xFFF5C542),
+            color: const Color(0xFF22C55E),
             borderRadius: BorderRadius.circular(2),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFF5C542).withValues(alpha: 0.35),
+                color: const Color(0xFF22C55E).withValues(alpha: 0.35),
                 blurRadius: 10,
               ),
             ],
@@ -447,8 +485,8 @@ class _RuleLine extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Colors.transparent,
-            const Color(0xFF38BDF8).withValues(alpha: 0.65),
-            const Color(0xFFF5C542).withValues(alpha: 0.5),
+            const Color(0xFF22C55E).withValues(alpha: 0.65),
+            const Color(0xFF10B981).withValues(alpha: 0.5),
             Colors.transparent,
           ],
         ),
@@ -496,14 +534,14 @@ class _JourneyButtonState extends State<_JourneyButton> {
             end: Alignment.bottomRight,
             colors: active
                 ? const [
-                    Color(0xFF1D4ED8),
-                    Color(0xFF2563EB),
-                    Color(0xFFD4A51C),
+                    Color(0xFF15803D),
+                    Color(0xFF16A34A),
+                    Color(0xFF10B981),
                   ]
                 : const [
-                    Color(0xFF2563EB),
-                    Color(0xFF1D4ED8),
-                    Color(0xFF0F3EA8),
+                    Color(0xFF166534),
+                    Color(0xFF15803D),
+                    Color(0xFF0F766E),
                   ],
           );
     final foreground = widget.secondary

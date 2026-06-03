@@ -5,13 +5,14 @@ import 'package:http/http.dart' as http;
 import '../config/api_config.dart';
 
 class ApiClient {
-  ApiClient({http.Client? httpClient}) : _httpClient = httpClient ?? http.Client();
+  ApiClient({http.Client? httpClient})
+    : _httpClient = httpClient ?? http.Client();
 
   final http.Client _httpClient;
 
   Uri _buildUri(String path) {
     final normalizedPath = path.startsWith('/') ? path : '/$path';
-    return Uri.parse('${ApiConfig.baseUrl}$normalizedPath');
+    return Uri.parse('${ApiConfig.runtimeBaseUrl}$normalizedPath');
   }
 
   Future<dynamic> get(String path) async {
@@ -33,9 +34,10 @@ class ApiClient {
     final body = response.body.trim();
 
     if (statusCode < 200 || statusCode >= 300) {
+      final message = _errorMessageFromBody(body);
       throw ApiException(
         statusCode: statusCode,
-        message: body.isEmpty ? 'Erro HTTP $statusCode' : body,
+        message: message ?? 'Erro HTTP $statusCode',
       );
     }
 
@@ -44,6 +46,30 @@ class ApiClient {
     }
 
     return jsonDecode(body);
+  }
+
+  String? _errorMessageFromBody(String body) {
+    if (body.isEmpty) {
+      return null;
+    }
+
+    try {
+      final decoded = jsonDecode(body);
+      if (decoded is Map<String, dynamic>) {
+        final error = decoded['error'];
+        if (error is String && error.trim().isNotEmpty) {
+          return error;
+        }
+        final message = decoded['message'];
+        if (message is String && message.trim().isNotEmpty) {
+          return message;
+        }
+      }
+    } catch (_) {
+      return body;
+    }
+
+    return body;
   }
 }
 

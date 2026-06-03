@@ -25,10 +25,19 @@ function pickLongitude(data) {
   return NaN;
 }
 
+function pickRadius(data) {
+  const candidates = [data.raioMetros, data.raio, data.radiusMeters, data.radius];
+  for (const value of candidates) {
+    const n = Number(value);
+    if (Number.isFinite(n) && n > 0) return n;
+  }
+  return NaN;
+}
+
 /**
  * Aceita latitude/longitude (ou x/y) no Firestore.
- * Se `raio` existir, só considera ambientes dentro do raio.
- * Se `raio` não existir, retorna o ambiente mais próximo.
+ * Se `raioMetros`/`raio` existir, só considera ambientes dentro do raio.
+ * Se não existir, retorna o ambiente mais próximo.
  */
 export async function findAmbienteParaCoordenadas(latitude, longitude) {
   const snapshot = await db.collection('ambientes').get();
@@ -39,7 +48,7 @@ export async function findAmbienteParaCoordenadas(latitude, longitude) {
     const data = doc.data();
     const lat = pickLatitude(data);
     const lon = pickLongitude(data);
-    const raio = Number(data.raio);
+    const raio = pickRadius(data);
 
     if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
       continue;

@@ -28,6 +28,11 @@
 	<string>$(GOOGLE_MAPS_API_KEY)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>O jogo usa sua localizacao para acompanhar o jogador no Campus I.</string>
 	<key>UIApplicationSceneManifest</key>

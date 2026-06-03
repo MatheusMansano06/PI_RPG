@@ -10,7 +10,7 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     descricao: 'O ponto inicial da jornada pelo Campus I.',
     latitude: -22.83455,
     longitude: -47.05278,
-    raioMetros: 40,
+    raioMetros: 60,
     stageNumber: 1,
     missionTitle: 'Resolver o primeiro bloqueio',
     missionDescription:
@@ -74,7 +74,7 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     descricao: 'Centro de informacoes academicas e registros.',
     latitude: -22.83362,
     longitude: -47.05155,
-    raioMetros: 40,
+    raioMetros: 60,
     stageNumber: 2,
     missionTitle: 'Negociar sua regularizacao',
     missionDescription:
@@ -137,7 +137,7 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     descricao: 'Espaco ligado aos cursos e desafios de tecnologia.',
     latitude: -22.83318,
     longitude: -47.05262,
-    raioMetros: 40,
+    raioMetros: 60,
     stageNumber: 3,
     missionTitle: 'Decifrar a grade curricular',
     missionDescription:
@@ -201,7 +201,7 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     descricao: 'Ponto de encontro para pausa, estrategia e energia.',
     latitude: -22.83308,
     longitude: -47.05202,
-    raioMetros: 40,
+    raioMetros: 60,
     stageNumber: 4,
     missionTitle: 'Resolver o cartao nao ativado',
     missionDescription:
@@ -264,7 +264,7 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     descricao: 'Predio de passagem, aulas e novas conexoes.',
     latitude: -22.83409,
     longitude: -47.05265,
-    raioMetros: 40,
+    raioMetros: 60,
     stageNumber: 5,
     missionTitle: 'Encontrar a sala correta',
     missionDescription:
@@ -327,7 +327,7 @@ const List<GameEnvironmentModel> storyMockEnvironments = [
     descricao: 'Local onde a jornada vira entrega final.',
     latitude: -22.83409,
     longitude: -47.05265,
-    raioMetros: 40,
+    raioMetros: 60,
     stageNumber: 6,
     missionTitle: 'Ajudar um colega e fechar o ciclo',
     missionDescription:

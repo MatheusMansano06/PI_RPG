@@ -26,6 +26,20 @@ class GameMapScreen extends StatefulWidget {
 
 class _GameMapScreenState extends State<GameMapScreen> {
   static const LatLng _campusI = LatLng(-22.8337, -47.0525);
+  static const String _gameMapStyle = '''
+[
+  {"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},
+  {"featureType":"transit","stylers":[{"visibility":"off"}]},
+  {"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#355E3B"}]},
+  {"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#74C476"}]},
+  {"featureType":"road","elementType":"geometry","stylers":[{"color":"#FFF3B0"}]},
+  {"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#C9A227"}]},
+  {"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#FFD166"}]},
+  {"featureType":"water","elementType":"geometry","stylers":[{"color":"#2D9CDB"}]},
+  {"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#2E8B57"}]},
+  {"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":25},{"lightness":-10}]}
+]
+''';
   static const MethodChannel _mapsChannel = MethodChannel(
     'projeto_integrador_jogo/maps',
   );
@@ -36,10 +50,8 @@ class _GameMapScreenState extends State<GameMapScreen> {
 
   GoogleMapController? _mapController;
   StreamSubscription<Position>? _positionSubscription;
-  Timer? _locationRefreshTimer;
   Position? _currentPosition;
   GameEnvironmentModel? _routeEnvironment;
-  bool _hasCenteredOnGps = false;
   bool? _mapsApiKeyConfigured;
   bool _hasLocationPermission = false;
   String _mapsConfigMessage = 'Validando configuracao do Google Maps...';
@@ -48,8 +60,12 @@ class _GameMapScreenState extends State<GameMapScreen> {
   String _detalheVerificacao =
       'Backend de localizacao desativado para teste em campo.';
   bool _checkingLocation = false;
-  bool _refreshingLocation = false;
   static const double _maxUsableAccuracyMeters = 60;
+  static const double _positionNoiseThresholdMeters = 2.5;
+  static const double _cameraMovementThresholdMeters = 5;
+  static const double _routeRefitThresholdMeters = 10;
+  LatLng? _lastCameraTarget;
+  LatLng? _lastRouteFitPlayer;
 
   @override
   void initState() {
@@ -60,14 +76,13 @@ class _GameMapScreenState extends State<GameMapScreen> {
 
   @override
   void dispose() {
-    _locationRefreshTimer?.cancel();
     _positionSubscription?.cancel();
     _mapController?.dispose();
     super.dispose();
   }
 
   Future<void> _verificarConfiguracaoMaps() async {
-    if (kIsWeb || defaultTargetPlatform != TargetPlatform.android) {
+    if (kIsWeb || defaultTargetPlatform == TargetPlatform.iOS) {
       if (mounted) {
         setState(() {
           _mapsApiKeyConfigured = true;
@@ -83,20 +98,25 @@ class _GameMapScreenState extends State<GameMapScreen> {
       if (!mounted) {
         return;
       }
+      final keyMessage = defaultTargetPlatform == TargetPlatform.iOS
+          ? 'Chave iOS ausente/invalidada. Configure GOOGLE_MAPS_API_KEY em ios/Flutter/GoogleMapsKeys.xcconfig e habilite Maps SDK for iOS no Google Cloud.'
+          : 'Chave do Google Maps ausente. Configure MAPS_API_KEY em android/local.properties.';
       setState(() {
         _mapsApiKeyConfigured = configured ?? false;
         _mapsConfigMessage = _mapsApiKeyConfigured == true
             ? 'Google Maps configurado'
-            : 'Chave do Google Maps ausente. Configure MAPS_API_KEY em android/local.properties.';
+            : keyMessage;
       });
     } catch (_) {
       if (!mounted) {
         return;
       }
+      final platformMessage = defaultTargetPlatform == TargetPlatform.iOS
+          ? 'Nao foi possivel validar a chave do Google Maps no iOS.'
+          : 'Nao foi possivel validar a chave do Google Maps no Android.';
       setState(() {
         _mapsApiKeyConfigured = false;
-        _mapsConfigMessage =
-            'Nao foi possivel validar a chave do Google Maps no Android.';
+        _mapsConfigMessage = platformMessage;
       });
     }
   }
@@ -138,30 +158,6 @@ class _GameMapScreenState extends State<GameMapScreen> {
       _atualizarPosicao,
       onError: _tratarErroLocalizacao,
     );
-    _iniciarAtualizacaoPeriodicaDoMapa();
-  }
-
-  void _iniciarAtualizacaoPeriodicaDoMapa() {
-    _locationRefreshTimer?.cancel();
-    _locationRefreshTimer = Timer.periodic(const Duration(seconds: 5), (_) {
-      _atualizarMapaComGpsAtual();
-    });
-  }
-
-  Future<void> _atualizarMapaComGpsAtual() async {
-    if (_refreshingLocation || !mounted || !_hasLocationPermission) {
-      return;
-    }
-
-    _refreshingLocation = true;
-    try {
-      final position = await _localizacaoService.posicaoAtual();
-      _atualizarPosicao(position);
-    } catch (error) {
-      _tratarErroLocalizacao(error);
-    } finally {
-      _refreshingLocation = false;
-    }
   }
 
   void _atualizarPosicao(Position position) {
@@ -178,6 +174,8 @@ class _GameMapScreenState extends State<GameMapScreen> {
       return;
     }
 
+    final previousPlayerLatLng = _playerLatLng;
+
     setState(() {
       _currentPosition = filteredPosition;
       _statusGps = _gpsStatusText(filteredPosition);
@@ -187,11 +185,10 @@ class _GameMapScreenState extends State<GameMapScreen> {
     if (target == null) {
       return;
     }
-    final cameraUpdate = _hasCenteredOnGps
-        ? CameraUpdate.newLatLng(target)
-        : CameraUpdate.newLatLngZoom(target, 18);
-    _hasCenteredOnGps = true;
-    _mapController?.moveCamera(cameraUpdate);
+    final movedMeters = previousPlayerLatLng == null
+        ? double.infinity
+        : _distanceBetween(previousPlayerLatLng, target);
+    _updateCameraForPosition(target, filteredPosition, movedMeters);
     _verificarLocalizacao(target);
   }
 
@@ -276,18 +273,25 @@ class _GameMapScreenState extends State<GameMapScreen> {
             GoogleMap(
               initialCameraPosition: const CameraPosition(
                 target: _campusI,
-                zoom: 17,
+                zoom: 17.2,
+                tilt: 0,
               ),
               myLocationButtonEnabled: _hasLocationPermission,
               myLocationEnabled: _hasLocationPermission,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
+              compassEnabled: false,
+              style: _gameMapStyle,
               markers: _buildMapMarkers(),
               circles: _buildCurrentEnvironmentCircle(),
               polylines: _buildRoutePolylines(routeEnvironment),
               onMapCreated: (controller) {
                 _mapController = controller;
-                controller.moveCamera(CameraUpdate.newLatLng(cameraLatLng));
+                controller.moveCamera(
+                  CameraUpdate.newCameraPosition(
+                    CameraPosition(target: cameraLatLng, zoom: 17.2, tilt: 0),
+                  ),
+                );
               },
             )
           else
@@ -474,15 +478,15 @@ class _GameMapScreenState extends State<GameMapScreen> {
       position.longitude,
     );
 
-    if (distanceFromPrevious < 0.5) {
+    if (distanceFromPrevious < _positionNoiseThresholdMeters) {
       return previous;
     }
 
     final alpha = position.accuracy <= 12
-        ? 0.85
+        ? 0.95
         : position.accuracy <= 25
-        ? 0.65
-        : 0.4;
+        ? 0.85
+        : 0.7;
 
     return Position(
       latitude: _lerp(previous.latitude, position.latitude, alpha),
@@ -508,12 +512,26 @@ class _GameMapScreenState extends State<GameMapScreen> {
     LatLng player,
     GameEnvironmentModel environment,
   ) {
-    return Geolocator.distanceBetween(
-      player.latitude,
-      player.longitude,
-      environment.latitude,
-      environment.longitude,
+    return _distanceBetween(
+      player,
+      LatLng(environment.latitude, environment.longitude),
     );
+  }
+
+  double _distanceBetween(LatLng first, LatLng second) {
+    return Geolocator.distanceBetween(
+      first.latitude,
+      first.longitude,
+      second.latitude,
+      second.longitude,
+    );
+  }
+
+  double _currentBearing(double heading) {
+    if (!heading.isFinite || heading < 0) {
+      return 0;
+    }
+    return heading % 360;
   }
 
   Set<Marker> _buildEnvironmentMarkers() {
@@ -589,28 +607,26 @@ class _GameMapScreenState extends State<GameMapScreen> {
       Polyline(
         polylineId: PolylineId('rota-${environment.id}'),
         points: [player, LatLng(environment.latitude, environment.longitude)],
-        color: AppTheme.accent,
-        width: 6,
+        color: const Color(0xFFB52BFF),
+        width: 7,
         jointType: JointType.round,
         startCap: Cap.roundCap,
         endCap: Cap.roundCap,
+        patterns: [PatternItem.gap(10), PatternItem.dot],
       ),
     };
   }
 
   BitmapDescriptor _markerIcon(AmbienteStatus status) {
     return switch (status) {
-      AmbienteStatus.concluido => BitmapDescriptor.pinConfig(
-        backgroundColor: const Color(0xFF16A34A),
-        borderColor: Colors.white,
+      AmbienteStatus.concluido => BitmapDescriptor.defaultMarkerWithHue(
+        BitmapDescriptor.hueGreen,
       ),
-      AmbienteStatus.atual => BitmapDescriptor.pinConfig(
-        backgroundColor: const Color(0xFF2563EB),
-        borderColor: Colors.white,
+      AmbienteStatus.atual => BitmapDescriptor.defaultMarkerWithHue(
+        BitmapDescriptor.hueViolet,
       ),
-      AmbienteStatus.bloqueado => BitmapDescriptor.pinConfig(
-        backgroundColor: const Color(0xFF64748B),
-        borderColor: Colors.white,
+      AmbienteStatus.bloqueado => BitmapDescriptor.defaultMarkerWithHue(
+        BitmapDescriptor.hueOrange,
       ),
     };
   }
@@ -640,6 +656,10 @@ class _GameMapScreenState extends State<GameMapScreen> {
     }
 
     if (completed == true) {
+      setState(() {
+        _routeEnvironment = null;
+        _lastRouteFitPlayer = null;
+      });
       final next = _currentEnvironment;
       if (next != null) {
         _mapController?.animateCamera(
@@ -663,11 +683,59 @@ class _GameMapScreenState extends State<GameMapScreen> {
     final destination = LatLng(environment.latitude, environment.longitude);
     setState(() {
       _routeEnvironment = environment;
+      _lastRouteFitPlayer = player;
     });
 
+    _fitRouteOnMap(player, destination);
+  }
+
+  void _updateCameraForPosition(
+    LatLng target,
+    Position position,
+    double movedMeters,
+  ) {
+    final routeEnvironment = _routeEnvironment;
+    if (routeEnvironment != null) {
+      final lastRouteFitPlayer = _lastRouteFitPlayer;
+      if (lastRouteFitPlayer == null ||
+          _distanceBetween(lastRouteFitPlayer, target) >=
+              _routeRefitThresholdMeters) {
+        _lastRouteFitPlayer = target;
+        _fitRouteOnMap(
+          target,
+          LatLng(routeEnvironment.latitude, routeEnvironment.longitude),
+        );
+      }
+      return;
+    }
+
+    final lastCameraTarget = _lastCameraTarget;
+    if (lastCameraTarget != null &&
+        movedMeters < _cameraMovementThresholdMeters &&
+        _distanceBetween(lastCameraTarget, target) <
+            _cameraMovementThresholdMeters) {
+      return;
+    }
+
+    _lastCameraTarget = target;
     _mapController?.animateCamera(
-      CameraUpdate.newLatLngBounds(_boundsFor(player, destination), 72),
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: target,
+          zoom: 18.2,
+          tilt: 0,
+          bearing: _currentBearing(position.heading),
+        ),
+      ),
     );
+  }
+
+  void _fitRouteOnMap(LatLng player, LatLng destination) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngBounds(_boundsFor(player, destination), 96),
+      );
+    });
   }
 
   LatLngBounds _boundsFor(LatLng first, LatLng second) {

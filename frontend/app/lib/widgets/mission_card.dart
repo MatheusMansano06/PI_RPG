@@ -4,7 +4,7 @@ import 'game_button.dart';
 import 'game_card.dart';
 import 'status_badge.dart';
 
-class MissionCard extends StatelessWidget {
+class MissionCard extends StatefulWidget {
   const MissionCard({
     super.key,
     required this.title,
@@ -49,6 +49,13 @@ class MissionCard extends StatelessWidget {
   final VoidCallback? onTraceRoute;
   final VoidCallback? onEnter;
   final VoidCallback? onSimulateArrival;
+
+  @override
+  State<MissionCard> createState() => _MissionCardState();
+}
+
+class _MissionCardState extends State<MissionCard> {
+  bool _isMinimized = false;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +114,7 @@ class MissionCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              title,
+                              widget.title,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 19,
@@ -120,280 +127,293 @@ class MissionCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       StatusBadge(
-                        label: apiStatusText,
-                        icon: _apiIcon(apiTone),
-                        tone: apiTone,
+                        label: widget.apiStatusText,
+                        icon: _apiIcon(widget.apiTone),
+                        tone: widget.apiTone,
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          _isMinimized ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                          color: const Color(0xFFBAE6FD),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isMinimized = !_isMinimized;
+                          });
+                        },
                       ),
                     ],
                   ),
-                  const SizedBox(height: 14),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF020617).withValues(alpha: 0.48),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: const Color(0xFF38BDF8).withValues(alpha: 0.18),
-                      ),
-                    ),
-                    child: compact
-                        ? Column(
-                            children: [
-                              _Metric(
-                                label: 'Status do GPS',
-                                value: gpsStatusText,
-                                icon: Icons.gps_fixed,
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Latitude atual',
-                                value: _latitudeText,
-                                icon: Icons.my_location,
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Longitude atual',
-                                value: _longitudeText,
-                                icon: Icons.my_location,
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Ambiente atual',
-                                value: environmentName,
-                                icon: Icons.place,
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Destino',
-                                value: _destinationCoordinateText,
-                                icon: Icons.flag_outlined,
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Distancia atual',
-                                value: _distanceMetersText,
-                                icon: Icons.route,
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Raio necessario',
-                                value: '${radiusMeters.toStringAsFixed(0)} m',
-                                icon: Icons.radio_button_checked,
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Status',
-                                value: radiusStatusText,
-                                icon: Icons.verified_user_outlined,
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Verificacao',
-                                value: verificationStatusText,
-                                icon: Icons.fact_check_outlined,
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: _Metric(
-                                      label: 'Status do GPS',
-                                      value: gpsStatusText,
-                                      icon: Icons.gps_fixed,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: _Metric(
-                                      label: 'Ambiente atual',
-                                      value: environmentName,
-                                      icon: Icons.place,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: _Metric(
-                                      label: 'Latitude atual',
-                                      value: _latitudeText,
-                                      icon: Icons.my_location,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: _Metric(
-                                      label: 'Longitude atual',
-                                      value: _longitudeText,
-                                      icon: Icons.my_location,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: _Metric(
-                                      label: 'Destino',
-                                      value: _destinationCoordinateText,
-                                      icon: Icons.flag_outlined,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: _Metric(
-                                      label: 'Distancia atual',
-                                      value: _distanceMetersText,
-                                      icon: Icons.route,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: _Metric(
-                                      label: 'Raio necessario',
-                                      value:
-                                          '${radiusMeters.toStringAsFixed(0)} m',
-                                      icon: Icons.radio_button_checked,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: _Metric(
-                                      label: 'Status',
-                                      value: radiusStatusText,
-                                      icon: Icons.verified_user_outlined,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              _Metric(
-                                label: 'Verificacao',
-                                value: verificationStatusText,
-                                icon: Icons.fact_check_outlined,
-                              ),
-                            ],
-                          ),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.auto_stories,
-                        color: Color(0xFFF5C542),
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          hint,
-                          maxLines: compact ? 2 : 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Color(0xFFE0F2FE),
-                            height: 1.28,
-                            fontWeight: FontWeight.w800,
-                          ),
+                  if (!_isMinimized) ...[
+                    const SizedBox(height: 14),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF020617).withValues(alpha: 0.48),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: const Color(0xFF38BDF8).withValues(alpha: 0.18),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    apiDetailText,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Color(0xFF94A3B8),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
+                      child: compact
+                          ? Column(
+                              children: [
+                                _Metric(
+                                  label: 'Status do GPS',
+                                  value: widget.gpsStatusText,
+                                  icon: Icons.gps_fixed,
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Latitude atual',
+                                  value: _latitudeText,
+                                  icon: Icons.my_location,
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Longitude atual',
+                                  value: _longitudeText,
+                                  icon: Icons.my_location,
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Ambiente atual',
+                                  value: widget.environmentName,
+                                  icon: Icons.place,
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Destino',
+                                  value: _destinationCoordinateText,
+                                  icon: Icons.flag_outlined,
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Distancia atual',
+                                  value: _distanceMetersText,
+                                  icon: Icons.route,
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Raio necessario',
+                                  value: '${widget.radiusMeters.toStringAsFixed(0)} m',
+                                  icon: Icons.radio_button_checked,
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Status',
+                                  value: widget.radiusStatusText,
+                                  icon: Icons.verified_user_outlined,
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Verificacao',
+                                  value: widget.verificationStatusText,
+                                  icon: Icons.fact_check_outlined,
+                                ),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _Metric(
+                                        label: 'Status do GPS',
+                                        value: widget.gpsStatusText,
+                                        icon: Icons.gps_fixed,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: _Metric(
+                                        label: 'Ambiente atual',
+                                        value: widget.environmentName,
+                                        icon: Icons.place,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _Metric(
+                                        label: 'Latitude atual',
+                                        value: _latitudeText,
+                                        icon: Icons.my_location,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: _Metric(
+                                        label: 'Longitude atual',
+                                        value: _longitudeText,
+                                        icon: Icons.my_location,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _Metric(
+                                        label: 'Destino',
+                                        value: _destinationCoordinateText,
+                                        icon: Icons.flag_outlined,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: _Metric(
+                                        label: 'Distancia atual',
+                                        value: _distanceMetersText,
+                                        icon: Icons.route,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _Metric(
+                                        label: 'Raio necessario',
+                                        value:
+                                            '${widget.radiusMeters.toStringAsFixed(0)} m',
+                                        icon: Icons.radio_button_checked,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: _Metric(
+                                        label: 'Status',
+                                        value: widget.radiusStatusText,
+                                        icon: Icons.verified_user_outlined,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                _Metric(
+                                  label: 'Verificacao',
+                                  value: widget.verificationStatusText,
+                                  icon: Icons.fact_check_outlined,
+                                ),
+                              ],
+                            ),
                     ),
-                  ),
-                  if (onTraceRoute != null ||
-                      onEnter != null ||
-                      onSimulateArrival != null) ...[
-                    const SizedBox(height: 14),
-                    compact
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              if (onTraceRoute != null)
-                                GameButton(
-                                  label: 'Tracar rota',
-                                  icon: Icons.directions,
-                                  compact: true,
-                                  variant: GameButtonVariant.secondary,
-                                  onPressed: onTraceRoute,
-                                ),
-                              if (onTraceRoute != null && onEnter != null)
-                                const SizedBox(height: 10),
-                              if (onEnter != null)
-                                GameButton(
-                                  label: 'Iniciar fase',
-                                  icon: Icons.sports_esports,
-                                  compact: true,
-                                  onPressed: canEnter ? onEnter : null,
-                                ),
-                              if (onEnter != null && onSimulateArrival != null)
-                                const SizedBox(height: 10),
-                              if (onSimulateArrival != null)
-                                GameButton(
-                                  label: 'Simular chegada',
-                                  icon: Icons.near_me,
-                                  compact: true,
-                                  variant: GameButtonVariant.subtle,
-                                  onPressed: onSimulateArrival,
-                                ),
-                            ],
-                          )
-                        : Row(
-                            children: [
-                              if (onTraceRoute != null)
-                                Expanded(
-                                  flex: 4,
-                                  child: GameButton(
+                    const SizedBox(height: 12),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.auto_stories,
+                          color: Color(0xFFF5C542),
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            widget.hint,
+                            maxLines: compact ? 2 : 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Color(0xFFE0F2FE),
+                              height: 1.28,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.apiDetailText,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Color(0xFF94A3B8),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    if (widget.onTraceRoute != null ||
+                        widget.onEnter != null ||
+                        widget.onSimulateArrival != null) ...[
+                      const SizedBox(height: 14),
+                      compact
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                if (widget.onTraceRoute != null)
+                                  GameButton(
                                     label: 'Tracar rota',
                                     icon: Icons.directions,
+                                    compact: true,
                                     variant: GameButtonVariant.secondary,
-                                    onPressed: onTraceRoute,
+                                    onPressed: widget.onTraceRoute,
                                   ),
-                                ),
-                              if (onTraceRoute != null && onEnter != null)
-                                const SizedBox(width: 10),
-                              if (onEnter != null)
-                                Expanded(
-                                  flex: 5,
-                                  child: GameButton(
+                                if (widget.onTraceRoute != null && widget.onEnter != null)
+                                  const SizedBox(height: 10),
+                                if (widget.onEnter != null)
+                                  GameButton(
                                     label: 'Iniciar fase',
                                     icon: Icons.sports_esports,
-                                    onPressed: canEnter ? onEnter : null,
+                                    compact: true,
+                                    onPressed: widget.canEnter ? widget.onEnter : null,
                                   ),
-                                ),
-                              if (onEnter != null && onSimulateArrival != null)
-                                const SizedBox(width: 10),
-                              if (onSimulateArrival != null)
-                                Expanded(
-                                  flex: 4,
-                                  child: GameButton(
+                                if (widget.onEnter != null && widget.onSimulateArrival != null)
+                                  const SizedBox(height: 10),
+                                if (widget.onSimulateArrival != null)
+                                  GameButton(
                                     label: 'Simular chegada',
                                     icon: Icons.near_me,
-                                    onPressed: onSimulateArrival,
+                                    compact: true,
                                     variant: GameButtonVariant.subtle,
+                                    onPressed: widget.onSimulateArrival,
                                   ),
-                                ),
-                            ],
-                          ),
+                                ],
+                            )
+                          : Row(
+                              children: [
+                                if (widget.onTraceRoute != null)
+                                  Expanded(
+                                    flex: 4,
+                                    child: GameButton(
+                                      label: 'Tracar rota',
+                                      icon: Icons.directions,
+                                      variant: GameButtonVariant.secondary,
+                                      onPressed: widget.onTraceRoute,
+                                    ),
+                                  ),
+                                if (widget.onTraceRoute != null && widget.onEnter != null)
+                                  const SizedBox(width: 10),
+                                if (widget.onEnter != null)
+                                  Expanded(
+                                    flex: 5,
+                                    child: GameButton(
+                                      label: 'Iniciar fase',
+                                      icon: Icons.sports_esports,
+                                      onPressed: widget.canEnter ? widget.onEnter : null,
+                                    ),
+                                  ),
+                                if (widget.onEnter != null && widget.onSimulateArrival != null)
+                                  const SizedBox(width: 10),
+                                if (widget.onSimulateArrival != null)
+                                  Expanded(
+                                    flex: 4,
+                                    child: GameButton(
+                                      label: 'Simular chegada',
+                                      icon: Icons.near_me,
+                                      onPressed: widget.onSimulateArrival,
+                                      variant: GameButtonVariant.subtle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                    ],
                   ],
                 ],
               ),
@@ -414,31 +434,31 @@ class MissionCard extends StatelessWidget {
   }
 
   String get _latitudeText {
-    if (latitude == null || longitude == null) {
+    if (widget.latitude == null || widget.longitude == null) {
       return 'Aguardando GPS';
     }
-    return latitude!.toStringAsFixed(6);
+    return widget.latitude!.toStringAsFixed(6);
   }
 
   String get _longitudeText {
-    if (latitude == null || longitude == null) {
+    if (widget.latitude == null || widget.longitude == null) {
       return 'Aguardando GPS';
     }
-    return longitude!.toStringAsFixed(6);
+    return widget.longitude!.toStringAsFixed(6);
   }
 
   String get _destinationCoordinateText {
-    if (destinationLatitude == null || destinationLongitude == null) {
+    if (widget.destinationLatitude == null || widget.destinationLongitude == null) {
       return '--';
     }
-    return '${destinationLatitude!.toStringAsFixed(6)}, ${destinationLongitude!.toStringAsFixed(6)}';
+    return '${widget.destinationLatitude!.toStringAsFixed(6)}, ${widget.destinationLongitude!.toStringAsFixed(6)}';
   }
 
   String get _distanceMetersText {
-    if (distanceMeters == null) {
-      return distanceText;
+    if (widget.distanceMeters == null) {
+      return widget.distanceText;
     }
-    return '${distanceMeters!.toStringAsFixed(1)} m';
+    return '${widget.distanceMeters!.toStringAsFixed(1)} m';
   }
 }
 

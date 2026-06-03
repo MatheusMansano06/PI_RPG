@@ -8,6 +8,8 @@ class GameTextField extends StatefulWidget {
     required this.icon,
     required this.enabled,
     this.keyboardType,
+    this.textInputAction,
+    this.onSubmitted,
     this.obscureText = false,
   });
 
@@ -16,6 +18,8 @@ class GameTextField extends StatefulWidget {
   final IconData icon;
   final bool enabled;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final ValueChanged<String>? onSubmitted;
   final bool obscureText;
 
   @override
@@ -84,6 +88,8 @@ class _GameTextFieldState extends State<GameTextField> {
             controller: widget.controller,
             enabled: widget.enabled,
             keyboardType: widget.keyboardType,
+            textInputAction: widget.textInputAction,
+            onSubmitted: widget.onSubmitted,
             obscureText: widget.obscureText,
             cursorColor: const Color(0xFFF5C542),
             style: const TextStyle(

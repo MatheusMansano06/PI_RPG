@@ -16,6 +16,7 @@ class NpcDialogueCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final persona = _npcPersona(npc.nome);
     return GameGlassCard(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -28,8 +29,8 @@ class NpcDialogueCard extends StatelessWidget {
                 width: 62,
                 height: 62,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF2563EB), Color(0xFF0F172A)],
+                  gradient: LinearGradient(
+                    colors: [persona.color, const Color(0xFF0F172A)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -45,10 +46,11 @@ class NpcDialogueCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.person_4,
-                  color: Colors.white,
-                  size: 34,
+                child: Center(
+                  child: Text(
+                    persona.avatar,
+                    style: const TextStyle(fontSize: 30),
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -72,6 +74,29 @@ class NpcDialogueCard extends StatelessWidget {
                         color: Color(0xFFCBD5E1),
                         fontWeight: FontWeight.w700,
                         height: 1.25,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: persona.color.withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(
+                          color: persona.color.withValues(alpha: 0.45),
+                        ),
+                      ),
+                      child: Text(
+                        persona.role,
+                        style: TextStyle(
+                          color: persona.color,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 11,
+                          letterSpacing: 0.4,
+                        ),
                       ),
                     ),
                   ],
@@ -106,4 +131,18 @@ class NpcDialogueCard extends StatelessWidget {
       ),
     );
   }
+}
+
+({String avatar, String role, Color color}) _npcPersona(String npcName) {
+  final lower = npcName.toLowerCase();
+  if (lower.contains('professor')) {
+    return (avatar: '🧠', role: 'MESTRE ESTRATEGA', color: const Color(0xFF60A5FA));
+  }
+  if (lower.contains('bia') || lower.contains('helena')) {
+    return (avatar: '🛰️', role: 'GUIA DO CAMPUS', color: const Color(0xFF34D399));
+  }
+  if (lower.contains('ze')) {
+    return (avatar: '🛡️', role: 'SENTINELA DA ENTRADA', color: const Color(0xFFF59E0B));
+  }
+  return (avatar: '🎯', role: 'NPC ALIADO', color: const Color(0xFFA78BFA));
 }
