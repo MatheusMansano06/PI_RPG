@@ -41,18 +41,18 @@ No Flutter, a organização principal é:
 - `lib/screens`: telas completas que o usuário vê.
 - `lib/widgets`: componentes reaproveitados, como cards, botões, painel de missão e campos de texto.
 - `lib/services`: regras de negócio, como login, progresso, localização e áudio.
-- `lib/data/story_mock.dart`: roteiro das fases do jogo.
+- `lib/data/step_01_roteiro_fases.dart`: roteiro das fases do jogo.
 - `lib/models`: classes que organizam os dados do jogo.
 
 ## Arquivos que vale citar
 
 - `frontend/app/lib/main.dart`: ponto inicial do app Flutter.
-- `frontend/app/lib/screens/splash_screen.dart`: primeira tela e transição para login.
-- `frontend/app/lib/screens/auth/login_screen.dart`: login e cadastro do aluno.
-- `frontend/app/lib/screens/game/map_game_screen.dart`: mapa, GPS, raio da missão e entrada nas fases.
-- `frontend/app/lib/data/story_mock.dart`: conteúdo narrativo do projeto.
-- `frontend/app/lib/services/game_progress_service.dart`: controla fase atual e fases concluídas.
-- `frontend/app/lib/services/localizacao_service.dart`: pede permissão e lê a posição do GPS.
+- `frontend/app/lib/screens/step_01_splash_screen.dart`: primeira tela e transição para login.
+- `frontend/app/lib/screens/auth/step_02_login_screen.dart`: login e cadastro do aluno.
+- `frontend/app/lib/screens/game/step_05_map_game_screen.dart`: mapa, GPS, raio da missão e entrada nas fases.
+- `frontend/app/lib/data/step_01_roteiro_fases.dart`: conteúdo narrativo do projeto.
+- `frontend/app/lib/services/step_04_game_progress_service.dart`: controla fase atual e fases concluídas.
+- `frontend/app/lib/services/step_02_localizacao_service.dart`: pede permissão e lê a posição do GPS.
 - `backend/apiRpg/src/app.js`: configura as rotas da API.
 - `backend/apiRpg/src/routes/auth.routes.js`: rotas de login e cadastro.
 - `backend/apiRpg/src/services/authService.js`: regra de autenticação no backend.
@@ -69,7 +69,7 @@ No Flutter, a organização principal é:
 
 **Sobre a narrativa**
 
-"As fases ficam centralizadas em `story_mock.dart`. Isso facilita alterar textos, personagens, objetivos e recompensas sem mexer nas telas principais."
+"As fases ficam centralizadas em `step_01_roteiro_fases.dart`. Isso facilita alterar textos, personagens, objetivos e recompensas sem mexer nas telas principais."
 
 **Sobre os componentes**
 

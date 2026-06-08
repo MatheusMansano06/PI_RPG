@@ -15,11 +15,15 @@ Para usar o mapa no Android, configure `MAPS_API_KEY` em `android/local.properti
 
 ## Partes principais
 
-- `lib/data/story_mock.dart`: roteiro das fases, personagens, falas, respostas e recompensas.
-- `lib/screens`: telas do fluxo principal, login, mapa, diálogos, desafios e progresso.
-- `lib/services`: regras de autenticação, progresso, GPS e áudio.
-- `lib/widgets`: componentes visuais reutilizados nas telas.
+- `lib/data/step_01_roteiro_fases.dart`: roteiro das fases, personagens, falas, respostas e recompensas.
+- `lib/screens`: telas numeradas na ordem em que o usuário passa pelo app.
+- `lib/services`: serviços numerados por responsabilidade: login, GPS, progresso e áudio.
+- `lib/widgets`: componentes visuais reutilizados nas telas, também numerados para consulta rápida.
+- `android`: arquivos nativos do Android.
+- `ios`: arquivos nativos do iOS.
 - `backend/apiRpg`: API em Node.js usada para autenticação e serviços do projeto.
+
+Arquivos de Linux, macOS, Windows e Web foram removidos porque esta entrega ficou focada em Android e iOS.
 
 ## Ideia para apresentação
 

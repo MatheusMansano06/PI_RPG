@@ -18,8 +18,8 @@ export class AuthError extends Error {
   }
 }
 
-export async function register({ nome, email, senha }) {
-  const data = validateRegister({ nome, email, senha });
+export async function register({ nome, email, senha, telefone, curso }) {
+  const data = validateRegister({ nome, email, senha, telefone, curso });
   const ref = usuarios.doc(userDocId(data.email));
   const existing = await ref.get();
 
@@ -31,13 +31,21 @@ export async function register({ nome, email, senha }) {
   await ref.set({
     nome: data.nome,
     email: data.email,
+    telefone: data.telefone,
+    curso: data.curso,
+    progresso: criarProgressoInicial(),
     senhaHash: password.hash,
     senhaSalt: password.salt,
     dataCriacao: FieldValue.serverTimestamp(),
     ultimoLogin: FieldValue.serverTimestamp(),
   });
 
-  return sessionFor({ nome: data.nome, email: data.email });
+  return sessionFor({
+    nome: data.nome,
+    email: data.email,
+    telefone: data.telefone,
+    curso: data.curso,
+  });
 }
 
 export async function login({ email, senha }) {
@@ -61,7 +69,12 @@ export async function login({ email, senha }) {
   }
 
   await ref.update({ ultimoLogin: FieldValue.serverTimestamp() });
-  return sessionFor({ nome: user.nome, email: user.email });
+  return sessionFor({
+    nome: user.nome,
+    email: user.email,
+    telefone: user.telefone,
+    curso: user.curso,
+  });
 }
 
 export async function health() {
@@ -69,22 +82,31 @@ export async function health() {
   return { ok: true, database: 'firestore' };
 }
 
-function validateRegister({ nome, email, senha }) {
+function validateRegister({ nome, email, senha, telefone, curso }) {
   const normalizedNome = typeof nome === 'string' ? nome.trim() : '';
   const normalizedEmail = normalizeEmail(email);
   const normalizedSenha = typeof senha === 'string' ? senha.trim() : '';
+  const normalizedTelefone = typeof telefone === 'string' ? telefone.trim() : '';
+  const normalizedCurso = typeof curso === 'string' ? curso.trim() : '';
 
   if (!normalizedNome) {
-    throw new AuthError('Informe o nome do personagem.');
+    throw new AuthError('Informe o nome do aluno.');
   }
 
   validateEmail(normalizedEmail);
   validatePassword(normalizedSenha);
+  validateTelefone(normalizedTelefone);
+
+  if (!normalizedCurso) {
+    throw new AuthError('Informe o curso.');
+  }
 
   return {
     nome: normalizedNome,
     email: normalizedEmail,
     senha: normalizedSenha,
+    telefone: normalizedTelefone,
+    curso: normalizedCurso,
   };
 }
 
@@ -127,6 +149,17 @@ function validatePassword(senha) {
   }
 }
 
+function validateTelefone(telefone) {
+  if (!telefone) {
+    throw new AuthError('Informe o telefone.');
+  }
+
+  const digits = telefone.replace(/\D/g, '');
+  if (digits.length < 8) {
+    throw new AuthError('Informe um telefone valido.');
+  }
+}
+
 async function hashPassword(senha) {
   const salt = crypto.randomBytes(16).toString('hex');
   const derivedKey = await scrypt(senha, salt, 64);
@@ -155,10 +188,22 @@ function userDocId(email) {
   return crypto.createHash('sha256').update(email).digest('hex');
 }
 
-function sessionFor({ nome, email }) {
+function criarProgressoInicial() {
+  return {
+    ambienteAtualId: 'estacionamento_entrada',
+    ambientesConcluidos: [],
+    nivel: 1,
+    xp: 0,
+    atualizadoEm: FieldValue.serverTimestamp(),
+  };
+}
+
+function sessionFor({ nome, email, telefone, curso }) {
   return {
     nome,
     email,
+    telefone: telefone ?? '',
+    curso: curso ?? '',
     token: jwt.sign({ email, nome }, jwtSecret, { expiresIn: '7d' }),
   };
 }

@@ -1,0 +1,1257 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guia de estudo do app - Campus I em Jogo</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg2: #0f172a;
+      --panel: #111827;
+      --panel2: #172554;
+      --line: #334155;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --soft: #94a3b8;
+      --blue: #38bdf8;
+      --gold: #f5c542;
+      --green: #22c55e;
+      --red: #f87171;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    code,
+    pre {
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    }
+
+    code {
+      color: #bbf7d0;
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      background: #020617;
+      color: #e2e8f0;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    header {
+      background:
+        linear-gradient(90deg, rgba(7, 17, 31, 0.98), rgba(7, 17, 31, 0.76)),
+        url("../assets/images/backgrounds/start_campus.png") center / cover;
+      border-bottom: 1px solid rgba(245, 197, 66, 0.35);
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 64vh;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: center;
+      padding: 48px 0;
+    }
+
+    .hero h1 {
+      margin: 0 0 16px;
+      font-size: clamp(36px, 6vw, 76px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 780px;
+      color: #e0f2fe;
+      font-size: 19px;
+      margin: 0 0 18px;
+    }
+
+    .card,
+    .tab-card,
+    .mini-card,
+    .file-card,
+    .screen-card,
+    .note,
+    .summary-box {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(56, 189, 248, 0.24);
+      border-radius: 14px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
+    }
+
+    .card,
+    .note,
+    .summary-box {
+      padding: 20px;
+    }
+
+    .badge-row,
+    .tab-buttons,
+    .flow-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(125, 211, 252, 0.32);
+      color: #e0f2fe;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hero-list li {
+      padding-left: 18px;
+      position: relative;
+      color: var(--muted);
+    }
+
+    .hero-list li::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      position: absolute;
+      left: 0;
+      top: 11px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(7, 17, 31, 0.95);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .tab-buttons {
+      padding: 12px 0;
+    }
+
+    .tab-button {
+      cursor: pointer;
+      border: 1px solid rgba(125, 211, 252, 0.3);
+      background: #0f172a;
+      color: #e0f2fe;
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .tab-button.active {
+      color: #020617;
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    main {
+      padding: 34px 0 64px;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: show 0.18s ease-out;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes show {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    section {
+      margin-bottom: 26px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.05;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    h4 {
+      margin: 0 0 6px;
+      font-size: 17px;
+      color: #f8fafc;
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
+
+    .muted {
+      color: var(--soft);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .mini-card,
+    .file-card,
+    .screen-card,
+    .tab-card {
+      padding: 16px;
+    }
+
+    .mini-card strong,
+    .file-card strong,
+    .screen-card strong {
+      display: block;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .path {
+      display: block;
+      color: #7dd3fc;
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.4;
+      word-break: break-word;
+      margin-bottom: 8px;
+    }
+
+    .flow {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .flow-item {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(125, 211, 252, 0.24);
+      border-radius: 14px;
+    }
+
+    .num {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      color: #020617;
+      background: var(--gold);
+      font-weight: 900;
+    }
+
+    .arrow-line {
+      margin: 18px 0;
+      padding: 14px;
+      border-left: 4px solid var(--gold);
+      background: rgba(245, 197, 66, 0.08);
+      color: #fde68a;
+      border-radius: 10px;
+      font-weight: 800;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #0f172a;
+      border: 1px solid #334155;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #1f2937;
+      vertical-align: top;
+      color: var(--muted);
+    }
+
+    th {
+      color: #f8fafc;
+      background: #172554;
+      font-size: 13px;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .code-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 18px;
+      align-items: start;
+      margin-top: 16px;
+    }
+
+    .callout {
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      background: rgba(34, 197, 94, 0.08);
+      color: #bbf7d0;
+      font-weight: 700;
+    }
+
+    .warning {
+      border-color: rgba(245, 197, 66, 0.45);
+      background: rgba(245, 197, 66, 0.08);
+      color: #fde68a;
+    }
+
+    .screen-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .real-print-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 18px 0 26px;
+    }
+
+    .real-print-card {
+      overflow: hidden;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(56, 189, 248, 0.24);
+      border-radius: 14px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
+    }
+
+    .real-print-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      object-position: top center;
+      background: #020617;
+    }
+
+    .real-print-caption {
+      padding: 12px;
+      border-top: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .real-print-caption strong {
+      display: block;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .real-print-caption span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .screen-card {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .screen-index {
+      display: grid;
+      place-items: center;
+      height: 66px;
+      background: #172554;
+      border: 1px solid rgba(245, 197, 66, 0.45);
+      border-radius: 12px;
+      color: var(--gold);
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .parts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(125, 211, 252, 0.3);
+      color: #e0f2fe;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .footer {
+      padding: 26px 0 48px;
+      color: var(--soft);
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .grid-2,
+      .code-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-3,
+      .grid-4,
+      .real-print-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .grid-3,
+      .grid-4,
+      .real-print-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .screen-card,
+      .flow-item {
+        grid-template-columns: 1fr;
+      }
+
+      .tab-button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      nav {
+        position: static;
+      }
+
+      .tab-panel {
+        display: block;
+      }
+
+      .tab-button {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <div>
+        <h1>Guia completo para estudar o código</h1>
+        <p class="lead">Material do grupo para entender o aplicativo <strong>Campus I em Jogo</strong>. Sem prints inventados. A página explica o fluxo real do código: arquivos, telas, services, dados das missões, mapa, GPS, login, progresso e partes nativas Android/iOS.</p>
+        <div class="badge-row">
+          <span class="badge">Fluxo do app</span>
+          <span class="badge">Código explicado</span>
+          <span class="badge">Missões e personagens</span>
+          <span class="badge">GPS e mapa</span>
+          <span class="badge">Fala para banca</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Objetivo deste guia</h3>
+        <ul class="hero-list">
+          <li>Mostrar qual arquivo chama qual tela.</li>
+          <li>Explicar as funções importantes em linguagem simples.</li>
+          <li>Ajudar o grupo a estudar antes da apresentação.</li>
+          <li>Evitar print falso ou imagem que não representa a tela real.</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="wrap tab-buttons" role="tablist" aria-label="Abas do guia">
+      <button class="tab-button active" data-tab="resumo" type="button">Resumo</button>
+      <button class="tab-button" data-tab="fluxo" type="button">Fluxo</button>
+      <button class="tab-button" data-tab="telas" type="button">Telas</button>
+      <button class="tab-button" data-tab="codigo" type="button">Código</button>
+      <button class="tab-button" data-tab="services" type="button">Services</button>
+      <button class="tab-button" data-tab="dados" type="button">Dados</button>
+      <button class="tab-button" data-tab="mobile" type="button">Android/iOS</button>
+      <button class="tab-button" data-tab="estudo" type="button">Estudo</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <article id="resumo" class="tab-panel active">
+      <section>
+        <h2>Resumo do projeto</h2>
+        <div class="grid-2">
+          <div class="summary-box">
+            <h3>O que o app faz</h3>
+            <p>O app orienta calouros pelo Campus I usando uma história gamificada. O aluno entra, vê o mapa, caminha até o local da missão, conversa com um personagem, responde uma pergunta e libera a próxima fase.</p>
+            <p>O foco do app é explicar o campus de um jeito mais leve, misturando localização real com narrativa.</p>
+          </div>
+          <div class="summary-box">
+            <h3>Como o código foi separado</h3>
+            <p><code>screens</code> guarda as telas que o usuário vê.</p>
+            <p><code>services</code> guarda regras como login, GPS, progresso e áudio.</p>
+            <p><code>data</code> guarda o roteiro das fases.</p>
+            <p><code>models</code> guarda os formatos dos dados.</p>
+            <p><code>widgets</code> guarda peças visuais reutilizadas.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Explicação em uma frase</h2>
+        <div class="callout">
+          O app começa no <code>main.dart</code>, abre a splash, vai para login, depois menu, prólogo, mapa, personagem, pergunta e conclusão da missão. A conclusão chama o serviço de progresso e libera a próxima fase.
+        </div>
+      </section>
+
+      <section>
+        <h2>Mapa mental rápido</h2>
+        <div class="grid-4">
+          <div class="mini-card"><strong>Entrada</strong><p><code>main.dart</code> e splash iniciam o app.</p></div>
+          <div class="mini-card"><strong>Usuário</strong><p>Login/cadastro conversam com o backend.</p></div>
+          <div class="mini-card"><strong>Jogo</strong><p>Mapa e roteiro controlam a missão atual.</p></div>
+          <div class="mini-card"><strong>Progresso</strong><p>Service marca fase concluída e libera próxima.</p></div>
+        </div>
+      </section>
+    </article>
+
+    <article id="fluxo" class="tab-panel">
+      <section>
+        <h2>Fluxo principal em ordem</h2>
+        <p>Esta é a ordem mais importante para estudar. Se o grupo entender isso, consegue explicar quase todo o app.</p>
+
+        <div class="flow">
+          <div class="flow-item">
+            <div class="num">1</div>
+            <div>
+              <h3><code>main.dart</code></h3>
+              <span class="path">frontend/app/lib/main.dart</span>
+              <p>É o primeiro arquivo Dart do app. Ele chama <code>runApp(const MyApp())</code>. Dentro de <code>MyApp</code>, o <code>MaterialApp</code> define <code>home: const SplashScreen()</code>.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">2</div>
+            <div>
+              <h3>Splash</h3>
+              <span class="path">frontend/app/lib/screens/step_01_splash_screen.dart</span>
+              <p>A splash mostra o nome do app. Um <code>Timer</code> espera 2 segundos e chama <code>_goToLogin()</code>. Essa função abre a tela de login.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">3</div>
+            <div>
+              <h3>Login e cadastro</h3>
+              <span class="path">frontend/app/lib/screens/auth/step_02_login_screen.dart</span>
+              <p>A tela começa em modo login. Se o usuário clicar em <strong>Criar novo perfil</strong>, a variável <code>_isRegisterMode</code> vira true e aparece o campo <strong>Nome do aluno</strong>. Depois chama o <code>AuthService</code>.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">4</div>
+            <div>
+              <h3>Menu inicial</h3>
+              <span class="path">frontend/app/lib/screens/step_03_start_screen.dart</span>
+              <p>Mostra os botões <strong>Iniciar jornada</strong>, <strong>Continuar missão</strong>, <strong>Ver Progresso</strong> e <strong>Configurações</strong>. Iniciar jornada reinicia o progresso e abre o prólogo.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">5</div>
+            <div>
+              <h3>Prólogo</h3>
+              <span class="path">frontend/app/lib/screens/step_04_prologue_screen.dart</span>
+              <p>Explica a história: o aluno está no primeiro dia e precisa resolver uma pendência. Depois manda para o mapa.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">6</div>
+            <div>
+              <h3>Mapa</h3>
+              <span class="path">frontend/app/lib/screens/game/step_05_map_game_screen.dart</span>
+              <p>Cuida do Google Maps, GPS, marcador do jogador, marcador das fases, círculo de raio e botão para entrar na missão quando o aluno chega perto.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">7</div>
+            <div>
+              <h3>Introdução da fase</h3>
+              <span class="path">frontend/app/lib/screens/game/step_06_stage_intro_screen.dart</span>
+              <p>Mostra o nome da fase, objetivo, personagem e informações do local. Depois abre a tela do personagem.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">8</div>
+            <div>
+              <h3>Personagem/NPC</h3>
+              <span class="path">frontend/app/lib/screens/game/step_07_npc_dialogue_screen.dart</span>
+              <p>Mostra o personagem daquela fase e a fala inicial. O botão <strong>Continuar</strong> abre a pergunta da fase.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">9</div>
+            <div>
+              <h3>Pergunta da missão</h3>
+              <span class="path">frontend/app/lib/screens/game/step_08_stage_challenge_screen.dart</span>
+              <p>Mostra as respostas cadastradas no roteiro. Se a resposta estiver correta, <code>_completed</code> fica true e aparece o botão <strong>Concluir missão</strong>.</p>
+            </div>
+          </div>
+
+          <div class="flow-item">
+            <div class="num">10</div>
+            <div>
+              <h3>Conclusão da missão</h3>
+              <span class="path">frontend/app/lib/screens/game/step_09_stage_complete_screen.dart</span>
+              <p>Chama <code>GameProgressService.instance.marcarComoConcluido(widget.environment.id)</code>. Essa é a linha que marca a fase como concluída e libera a próxima.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Resumo visual sem print falso</h2>
+        <div class="arrow-line">main.dart → Splash → Login/Cadastro → Menu → Prólogo → Mapa/GPS → Introdução → NPC → Pergunta → Conclusão → Próxima missão</div>
+      </section>
+    </article>
+
+    <article id="telas" class="tab-panel">
+      <section>
+        <h2>Telas reais do app</h2>
+        <p>Estes prints foram tirados renderizando as telas atuais do Flutter. Eles não são desenho separado e não são tela inventada. O mapa aparece com o painel real do app e estado de GPS, porque a captura foi feita fora de Android/iOS.</p>
+
+        <div class="real-print-grid">
+          <div class="real-print-card">
+            <img src="prints_reais/01_splash.png" alt="Print real da SplashScreen">
+            <div class="real-print-caption"><strong>01. Splash</strong><span>Primeira tela antes do login.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/02_login.png" alt="Print real da LoginScreen">
+            <div class="real-print-caption"><strong>02. Login</strong><span>Entrada do aluno com e-mail, senha e cadastro.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/03_menu.png" alt="Print real da StartScreen">
+            <div class="real-print-caption"><strong>03. Menu</strong><span>Escolha entre iniciar, continuar, progresso e configurações.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/04_prologo.png" alt="Print real da PrologueScreen">
+            <div class="real-print-caption"><strong>04. Prólogo</strong><span>Texto inicial da história do calouro.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/05_mapa.png" alt="Print real da GameMapScreen">
+            <div class="real-print-caption"><strong>05. Mapa</strong><span>Painel real com missão atual, GPS e botão de rota.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/06_intro_fase.png" alt="Print real da StageIntroScreen">
+            <div class="real-print-caption"><strong>06. Introdução</strong><span>Resumo da fase antes do personagem.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/07_personagem.png" alt="Print real da NpcDialogueScreen">
+            <div class="real-print-caption"><strong>07. Personagem</strong><span>NPC, função e fala inicial.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/08_pergunta.png" alt="Print real da StageChallengeScreen">
+            <div class="real-print-caption"><strong>08. Pergunta</strong><span>Desafio com respostas cadastradas no roteiro.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/09_conclusao.png" alt="Print real da StageCompleteScreen">
+            <div class="real-print-caption"><strong>09. Conclusão</strong><span>Recompensa e próxima fase liberada.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/10_progresso.png" alt="Print real da ProgressScreen">
+            <div class="real-print-caption"><strong>10. Progresso</strong><span>Lista de fases atuais e concluídas.</span></div>
+          </div>
+          <div class="real-print-card">
+            <img src="prints_reais/11_configuracoes.png" alt="Print real da SettingsScreen">
+            <div class="real-print-caption"><strong>11. Configurações</strong><span>Preferências e informações do sistema.</span></div>
+          </div>
+        </div>
+
+        <h2>O que cada tela faz no código</h2>
+        <p>Depois dos prints, esta parte liga cada tela ao arquivo Dart correspondente.</p>
+
+        <div class="screen-list">
+          <div class="screen-card">
+            <div class="screen-index">01</div>
+            <div>
+              <strong>SplashScreen</strong>
+              <span class="path">screens/step_01_splash_screen.dart</span>
+              <p>Mostra <strong>Campus I em Jogo</strong>, subtítulo e botão <strong>Entrar no campus</strong>. Automaticamente vai para login depois do timer.</p>
+              <div class="parts"><span class="pill">Timer</span><span class="pill">AudioManager</span><span class="pill">LoginScreen</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">02</div>
+            <div>
+              <strong>LoginScreen</strong>
+              <span class="path">screens/auth/step_02_login_screen.dart</span>
+              <p>Tela real tem campos de e-mail e senha. Quando está em cadastro, também aparece <strong>Nome do aluno</strong>. Usa <code>AuthService</code> para enviar dados ao backend.</p>
+              <div class="parts"><span class="pill">E-mail</span><span class="pill">Senha</span><span class="pill">Nome no cadastro</span><span class="pill">AuthService</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">03</div>
+            <div>
+              <strong>StartScreen</strong>
+              <span class="path">screens/step_03_start_screen.dart</span>
+              <p>Menu principal. Botões: iniciar jornada, continuar missão, ver progresso e configurações.</p>
+              <div class="parts"><span class="pill">GameButton</span><span class="pill">GameProgressService</span><span class="pill">Navigator</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">04</div>
+            <div>
+              <strong>PrologueScreen</strong>
+              <span class="path">screens/step_04_prologue_screen.dart</span>
+              <p>Conta a introdução do jogo. A história fala da pendência de matrícula e prepara o aluno para ir ao mapa.</p>
+              <div class="parts"><span class="pill">História</span><span class="pill">Ir para mapa</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">05</div>
+            <div>
+              <strong>GameMapScreen</strong>
+              <span class="path">screens/game/step_05_map_game_screen.dart</span>
+              <p>Tela mais importante do app. Mostra mapa, posição atual, distância da missão e libera entrada quando o aluno entra no raio definido.</p>
+              <div class="parts"><span class="pill">Google Maps</span><span class="pill">Geolocator</span><span class="pill">MissionPanel</span><span class="pill">Raio da fase</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">06</div>
+            <div>
+              <strong>StageIntroScreen</strong>
+              <span class="path">screens/game/step_06_stage_intro_screen.dart</span>
+              <p>Mostra detalhes da fase antes da conversa com o personagem. Recebe um <code>GameEnvironmentModel</code> pelo construtor.</p>
+              <div class="parts"><span class="pill">environment</span><span class="pill">npc</span><span class="pill">introText</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">07</div>
+            <div>
+              <strong>NpcDialogueScreen</strong>
+              <span class="path">screens/game/step_07_npc_dialogue_screen.dart</span>
+              <p>Mostra personagem, cargo/função e fala inicial. Depois chama <code>StageChallengeScreen</code>.</p>
+              <div class="parts"><span class="pill">personagem</span><span class="pill">falaInicial</span><span class="pill">Continuar</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">08</div>
+            <div>
+              <strong>StageChallengeScreen</strong>
+              <span class="path">screens/game/step_08_stage_challenge_screen.dart</span>
+              <p>Mostra a pergunta da fase. Quando o aluno escolhe a resposta correta, toca som de acerto e libera o botão de concluir.</p>
+              <div class="parts"><span class="pill">challenge.options</span><span class="pill">AudioManager</span><span class="pill">_completed</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">09</div>
+            <div>
+              <strong>StageCompleteScreen</strong>
+              <span class="path">screens/game/step_09_stage_complete_screen.dart</span>
+              <p>Marca missão concluída no service e mostra recompensa, XP e próxima fase.</p>
+              <div class="parts"><span class="pill">marcarComoConcluido</span><span class="pill">rewardText</span><span class="pill">próxima fase</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">10</div>
+            <div>
+              <strong>ProgressScreen</strong>
+              <span class="path">screens/step_11_progress_screen.dart</span>
+              <p>Mostra o diário de bordo. Usa <code>GameProgressService</code> para saber o que está concluído, atual ou bloqueado.</p>
+              <div class="parts"><span class="pill">roteiroFases</span><span class="pill">ambientesConcluidos</span><span class="pill">ambienteAtualId</span></div>
+            </div>
+          </div>
+
+          <div class="screen-card">
+            <div class="screen-index">11</div>
+            <div>
+              <strong>SettingsScreen</strong>
+              <span class="path">screens/step_12_settings_screen.dart</span>
+              <p>Mostra opções e estados que podem virar configurações reais depois, como áudio, modo cinematográfico e dicas de exploração.</p>
+              <div class="parts"><span class="pill">áudio</span><span class="pill">mapa</span><span class="pill">GPS</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <article id="codigo" class="tab-panel">
+      <section>
+        <h2>Trechos de código para estudar</h2>
+        <p>Estes blocos mostram os pontos que mais explicam o funcionamento do app.</p>
+
+        <div class="code-grid">
+          <div class="file-card">
+            <strong>1. Entrada do app</strong>
+            <span class="path">lib/main.dart</span>
+            <p>O app começa chamando <code>runApp</code>. O <code>home</code> decide a primeira tela.</p>
+          </div>
+          <pre><code>void main() {
+  runApp(const MyApp());
+}
+
+return MaterialApp(
+  title: 'RPG Interativo Campus I',
+  theme: AppTheme.light,
+  home: const SplashScreen(),
+);</code></pre>
+        </div>
+
+        <div class="code-grid">
+          <div class="file-card">
+            <strong>2. Splash para login</strong>
+            <span class="path">screens/step_01_splash_screen.dart</span>
+            <p>Depois do tempo da splash, o app troca para a tela de login.</p>
+          </div>
+          <pre><code>void initState() {
+  super.initState();
+  _timer = Timer(const Duration(seconds: 2), _goToLogin);
+}
+
+void _goToLogin() {
+  AudioManager().playBgm();
+  CinematicAudioService.instance.playCloudTransition();
+  Navigator.of(context).pushReplacement(
+    buildCloudRoute(const LoginScreen()),
+  );
+}</code></pre>
+        </div>
+
+        <div class="code-grid">
+          <div class="file-card">
+            <strong>3. Login ou cadastro</strong>
+            <span class="path">screens/auth/step_02_login_screen.dart</span>
+            <p>A variável <code>_isRegisterMode</code> decide se usa login ou cadastro.</p>
+          </div>
+          <pre><code>if (_isRegisterMode) {
+  await _authService.register(
+    nome: _nomeController.text,
+    email: _emailController.text,
+    senha: _senhaController.text,
+  );
+} else {
+  await _authService.login(
+    email: _emailController.text,
+    senha: _senhaController.text,
+  );
+}</code></pre>
+        </div>
+
+        <div class="code-grid">
+          <div class="file-card">
+            <strong>4. Mapa liga GPS</strong>
+            <span class="path">screens/game/step_05_map_game_screen.dart</span>
+            <p>Quando a tela do mapa abre, ela valida a chave e começa a localização.</p>
+          </div>
+          <pre><code>void initState() {
+  super.initState();
+  _verificarConfiguracaoMaps();
+  _iniciarLocalizacao();
+}</code></pre>
+        </div>
+
+        <div class="code-grid">
+          <div class="file-card">
+            <strong>5. Encontrar fase atual</strong>
+            <span class="path">screens/game/step_05_map_game_screen.dart</span>
+            <p>O mapa pega o ID da fase atual no service e procura no roteiro.</p>
+          </div>
+          <pre><code>GameEnvironmentModel? get _currentEnvironment {
+  final currentId = _progressService.ambienteAtualId;
+
+  for (final environment in roteiroFases) {
+    if (environment.id == currentId) {
+      return environment;
+    }
+  }
+
+  return null;
+}</code></pre>
+        </div>
+
+        <div class="code-grid">
+          <div class="file-card">
+            <strong>6. Resposta da pergunta</strong>
+            <span class="path">screens/game/step_08_stage_challenge_screen.dart</span>
+            <p>Se acertar, toca som certo e libera botão de conclusão.</p>
+          </div>
+          <pre><code>void _selectOption(DialogueOptionModel option) {
+  if (option.correta) {
+    AudioManager().playCorrect();
+  } else {
+    AudioManager().playWrong();
+  }
+
+  setState(() {
+    _selectedOption = option;
+    _completed = option.correta;
+  });
+}</code></pre>
+        </div>
+
+        <div class="code-grid">
+          <div class="file-card">
+            <strong>7. Concluir missão</strong>
+            <span class="path">services/step_04_game_progress_service.dart</span>
+            <p>Atualiza a lista de fases concluídas e calcula a próxima.</p>
+          </div>
+          <pre><code>void marcarComoConcluido(String ambienteId) {
+  final concluidos = {..._progress.ambientesConcluidos, ambienteId};
+  final proximo = obterProximoAmbiente(concluidos);
+
+  _progress = GameProgressModel(
+    ambienteAtualId: proximo?.id,
+    ambientesConcluidos: concluidos,
+  );
+}</code></pre>
+        </div>
+      </section>
+    </article>
+
+    <article id="services" class="tab-panel">
+      <section>
+        <h2>Services do projeto</h2>
+        <p>Services são classes que guardam regras ou chamadas importantes. A ideia é tirar regra pesada das telas.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Arquivo</th>
+              <th>Para que serve</th>
+              <th>Onde é chamado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>step_01_auth_service.dart</code></td>
+              <td>Faz login, cadastro e valida campos.</td>
+              <td><code>step_02_login_screen.dart</code></td>
+            </tr>
+            <tr>
+              <td><code>step_02_localizacao_service.dart</code></td>
+              <td>Pede permissão de GPS e lê posição atual.</td>
+              <td><code>step_05_map_game_screen.dart</code></td>
+            </tr>
+            <tr>
+              <td><code>step_03_location_check_service.dart</code></td>
+              <td>Consulta backend para teste/verificação de localização.</td>
+              <td><code>step_05_map_game_screen.dart</code></td>
+            </tr>
+            <tr>
+              <td><code>step_04_game_progress_service.dart</code></td>
+              <td>Guarda fase atual e fases concluídas.</td>
+              <td>Mapa, progresso, conclusão e final.</td>
+            </tr>
+            <tr>
+              <td><code>step_05_audio_manager.dart</code></td>
+              <td>Toca música de fundo e efeitos de clique/acerto/erro.</td>
+              <td>Main, botões e pergunta da fase.</td>
+            </tr>
+            <tr>
+              <td><code>step_06_cinematic_audio_service.dart</code></td>
+              <td>Toca som curto de transição.</td>
+              <td>Splash e login.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Como explicar services para banca</h2>
+        <div class="note">
+          <p>“A gente separou services para não colocar todas as regras dentro das telas. Por exemplo: a tela de login não faz HTTP direto; ela chama o <code>AuthService</code>. A tela do mapa não pede GPS sozinha; ela chama o <code>LocalizacaoService</code>. Assim fica mais organizado e mais fácil de estudar.”</p>
+        </div>
+      </section>
+    </article>
+
+    <article id="dados" class="tab-panel">
+      <section>
+        <h2>Dados das fases</h2>
+        <p>As fases ficam no arquivo <code>step_01_roteiro_fases.dart</code>. Cada fase é um <code>GameEnvironmentModel</code>.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Fase</th>
+              <th>Local</th>
+              <th>Personagem</th>
+              <th>Resumo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Entrada/Estacionamento da PUC</td><td>Seu Zé</td><td>Aluno pede orientação para resolver pendência.</td></tr>
+            <tr><td>2</td><td>Secretaria Acadêmica</td><td>Helena</td><td>Aluno confirma dados e recebe encaminhamento.</td></tr>
+            <tr><td>3</td><td>Prédio CT</td><td>Professor Marcos</td><td>Aluno entende conflito de grade curricular.</td></tr>
+            <tr><td>4</td><td>Refeitório</td><td>Bia</td><td>Aluno resolve problema do cartão e segue caminho.</td></tr>
+            <tr><td>5</td><td>Prédio H15</td><td>Lucas</td><td>Aluno aprende a encontrar a sala correta.</td></tr>
+            <tr><td>6</td><td>Laboratório de Computadores</td><td>Tutor do Laboratório</td><td>Aluno ajuda outro colega e fecha a jornada.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Campos importantes de cada fase</h2>
+        <div class="grid-3">
+          <div class="mini-card"><strong><code>id</code></strong><p>Identificador usado pelo progresso. Exemplo: <code>secretaria</code>.</p></div>
+          <div class="mini-card"><strong><code>nome</code></strong><p>Nome mostrado na tela e no mapa.</p></div>
+          <div class="mini-card"><strong><code>latitude/longitude</code></strong><p>Coordenadas usadas pelo GPS.</p></div>
+          <div class="mini-card"><strong><code>raioMetros</code></strong><p>Distância máxima para liberar a fase.</p></div>
+          <div class="mini-card"><strong><code>npc</code></strong><p>Personagem da fase.</p></div>
+          <div class="mini-card"><strong><code>challenge</code></strong><p>Pergunta e respostas da missão.</p></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Modelo da pergunta</h2>
+        <div class="code-grid">
+          <div class="file-card">
+            <strong>StageChallengeModel</strong>
+            <p>Guarda título, descrição, XP, recompensa e opções.</p>
+          </div>
+          <pre><code>challenge: StageChallengeModel(
+  title: 'Como pedir orientação?',
+  description: 'Escolha a postura que ajuda...',
+  rewardXp: 80,
+  rewardText: 'Mapa inicial atualizado.',
+  options: [
+    DialogueOptionModel(
+      texto: 'Mostrar a notificação...',
+      correta: true,
+      reacao: 'Perfeito...',
+    ),
+  ],
+)</code></pre>
+        </div>
+      </section>
+    </article>
+
+    <article id="mobile" class="tab-panel">
+      <section>
+        <h2>Android, iOS, mapa e backend</h2>
+        <div class="grid-2">
+          <div class="mini-card">
+            <strong>Android</strong>
+            <span class="path">frontend/app/android</span>
+            <p>Guarda configurações Gradle, AndroidManifest e chave Android do Google Maps em <code>local.properties</code>.</p>
+          </div>
+          <div class="mini-card">
+            <strong>iOS</strong>
+            <span class="path">frontend/app/ios</span>
+            <p>Guarda projeto Xcode, Info.plist, Podfile e chave iOS do Google Maps em <code>GoogleMapsKeys.xcconfig</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Como o mapa funciona</h2>
+        <div class="flow">
+          <div class="flow-item">
+            <div class="num">1</div>
+            <div><h3>Verifica chave do Maps</h3><p>O app usa <code>MethodChannel</code> para perguntar ao Android/iOS se a chave foi configurada.</p></div>
+          </div>
+          <div class="flow-item">
+            <div class="num">2</div>
+            <div><h3>Pede permissão de GPS</h3><p><code>LocalizacaoService</code> chama o Geolocator para pedir permissão e ler posição.</p></div>
+          </div>
+          <div class="flow-item">
+            <div class="num">3</div>
+            <div><h3>Calcula distância</h3><p>O app compara a posição do aluno com a coordenada da missão atual.</p></div>
+          </div>
+          <div class="flow-item">
+            <div class="num">4</div>
+            <div><h3>Libera fase</h3><p>Se a distância for menor que <code>raioMetros</code>, o botão de entrar na missão fica disponível.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Backend</h2>
+        <div class="note">
+          <p>O backend fica em <code>backend/apiRpg</code>. O app usa principalmente as rotas de autenticação:</p>
+          <p><code>POST /auth/login</code></p>
+          <p><code>POST /auth/register</code></p>
+          <p><code>GET /auth/health</code></p>
+        </div>
+      </section>
+    </article>
+
+    <article id="estudo" class="tab-panel">
+      <section>
+        <h2>Roteiro para estudar</h2>
+        <div class="grid-2">
+          <div class="note">
+            <h3>Ordem recomendada</h3>
+            <p>1. Abra <code>main.dart</code> e veja o <code>home</code>.</p>
+            <p>2. Abra splash e login.</p>
+            <p>3. Abra o menu e o prólogo.</p>
+            <p>4. Abra o mapa e entenda GPS/raio.</p>
+            <p>5. Abra NPC, pergunta e conclusão.</p>
+            <p>6. Abra o service de progresso.</p>
+            <p>7. Abra o roteiro das fases.</p>
+          </div>
+          <div class="note">
+            <h3>Fala pronta para banca</h3>
+            <p>“Nosso app começa no <code>main.dart</code>, que carrega a splash. A splash leva para login/cadastro. Depois o usuário entra no menu e inicia a jornada. O mapa usa GPS para verificar se o aluno está perto do local da missão. Quando entra no raio, a fase abre. A fase mostra um personagem, uma pergunta e, ao acertar, o app marca a missão como concluída e libera a próxima.”</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Perguntas prováveis</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Pergunta</th>
+              <th>Resposta curta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Onde começa o app?</td><td>No <code>main.dart</code>, com <code>runApp(const MyApp())</code>.</td></tr>
+            <tr><td>Como sabe qual fase está atual?</td><td>Pelo <code>GameProgressService</code>, que guarda <code>ambienteAtualId</code>.</td></tr>
+            <tr><td>Onde estão as missões?</td><td>No arquivo <code>step_01_roteiro_fases.dart</code>.</td></tr>
+            <tr><td>Como libera a fase?</td><td>O mapa calcula distância entre GPS do aluno e coordenada da missão.</td></tr>
+            <tr><td>Como conclui missão?</td><td>A tela de conclusão chama <code>marcarComoConcluido()</code>.</td></tr>
+            <tr><td>O que o backend faz?</td><td>Login, cadastro e serviços de apoio.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Arquivos mais importantes para abrir no VS Code</h2>
+        <div class="grid-3">
+          <div class="file-card"><strong>Entrada</strong><span class="path">lib/main.dart</span></div>
+          <div class="file-card"><strong>Login</strong><span class="path">lib/screens/auth/step_02_login_screen.dart</span></div>
+          <div class="file-card"><strong>Menu</strong><span class="path">lib/screens/step_03_start_screen.dart</span></div>
+          <div class="file-card"><strong>Mapa</strong><span class="path">lib/screens/game/step_05_map_game_screen.dart</span></div>
+          <div class="file-card"><strong>Pergunta</strong><span class="path">lib/screens/game/step_08_stage_challenge_screen.dart</span></div>
+          <div class="file-card"><strong>Progresso</strong><span class="path">lib/services/step_04_game_progress_service.dart</span></div>
+          <div class="file-card"><strong>Roteiro</strong><span class="path">lib/data/step_01_roteiro_fases.dart</span></div>
+          <div class="file-card"><strong>GPS</strong><span class="path">lib/services/step_02_localizacao_service.dart</span></div>
+          <div class="file-card"><strong>API</strong><span class="path">lib/core/network/api_client.dart</span></div>
+        </div>
+      </section>
+    </article>
+
+    <div class="footer">
+      Arquivo de estudo: <code>frontend/app/docs/03_site_estudo_fluxo.html</code>
+    </div>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll(".tab-button");
+    const panels = document.querySelectorAll(".tab-panel");
+
+    function openTab(tabName) {
+      buttons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.tab === tabName);
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle("active", panel.id === tabName);
+      });
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        openTab(button.dataset.tab);
+        history.replaceState(null, "", `#${button.dataset.tab}`);
+      });
+    });
+
+    const initialTab = window.location.hash.replace("#", "");
+    if (initialTab) {
+      openTab(initialTab);
+      window.setTimeout(() => {
+        document.documentElement.style.scrollBehavior = "auto";
+        window.scrollTo(0, 0);
+        document.documentElement.style.scrollBehavior = "";
+      }, 0);
+    }
+  </script>
+</body>
+</html>
